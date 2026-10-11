@@ -1,0 +1,635 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Previous Question Papers — AcadBridge</title>
+  <meta name="description" content="Browse, upload and download previous question papers on AcadBridge.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .paper-filter-box,.stat-card,.paper-card,.empty-state,.status-message {
+      background:#fff;
+      border:1px solid #e5eaf0;
+      border-radius:13px;
+    }
+    .paper-filter-box {
+      padding:24px;
+      box-shadow:0 5px 18px rgba(15,23,42,.04);
+    }
+    .paper-filter-box label {font-weight:600;font-size:.88rem;margin-bottom:7px}
+    .paper-filter-box .form-control,.paper-filter-box .form-select {min-height:43px}
+    .stat-card {padding:18px;height:100%}
+    .stat-card h4 {font-weight:700;margin:5px 0}
+    .paper-card {
+      display:flex;align-items:center;justify-content:space-between;
+      gap:18px;padding:20px;box-shadow:0 4px 15px rgba(15,23,42,.035);
+    }
+    .paper-info {min-width:0;overflow-wrap:anywhere}
+    .paper-info h6 {font-size:1rem;font-weight:700;color:#172b4d;margin-bottom:9px}
+    .paper-meta {color:#64748b;font-size:.82rem;line-height:1.9}
+    .paper-actions {display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+    .paper-actions a {font-size:.82rem;padding:8px 12px;text-decoration:none;white-space:nowrap}
+    .paper-tag {display:inline-block;padding:3px 8px;margin-left:5px;border-radius:5px;background:#dcfce7;color:#166534;font-size:.68rem;font-weight:700}
+    .empty-state,.status-message {padding:30px 20px;text-align:center;color:#64748b}
+    .notice {padding:14px 16px;border-radius:10px;font-size:.88rem;background:#eff6ff;color:#1d4ed8}
+    @media(max-width:767px) {
+      .paper-card {align-items:flex-start;flex-direction:column;padding:17px}
+      .paper-actions {width:100%}
+      .paper-actions a {flex:1;text-align:center}
+      .paper-filter-box {padding:17px}
+    }
+  </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-lg-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+        <li class="nav-item"><a class="nav-link active" href="previous-papers.html">Papers</a></li>
+        <li class="nav-item"><a class="nav-link" href="study-paths.html">Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html">My Library</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <a href="login.html" class="nav-link text-white-50">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Previous Papers</li>
+      </ol>
+    </nav>
+    <h1><i class="fas fa-scroll me-2"></i>Previous Year Question Papers</h1>
+    <p>Browse and share question papers across subjects and semesters.</p>
+  </div>
+</header>
+
+<main class="container py-4">
+  <div class="notice mb-4">
+    <i class="fas fa-database me-2"></i>
+    Papers are loaded from the AcadBridge backend. Uploaded PDFs are submitted to PaperController.
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-4">
+      <div class="stat-card">
+        <i class="fas fa-file-pdf text-primary"></i>
+        <h4 id="totalPapers">—</h4>
+        <div class="small text-muted">Question papers</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-4">
+      <div class="stat-card">
+        <i class="fas fa-book text-success"></i>
+        <h4 id="subjectCount">—</h4>
+        <div class="small text-muted">Subjects represented</div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="stat-card">
+        <i class="fas fa-filter text-info"></i>
+        <h4 id="visibleCount">—</h4>
+        <div class="small text-muted">Papers matching filters</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="paper-filter-box mb-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <h5 class="fw-bold mb-0"><i class="fas fa-sliders me-2"></i>Find a Question Paper</h5>
+      <button type="button" class="btn btn-primary btn-sm rounded-pill px-3"
+        data-bs-toggle="modal" data-bs-target="#paperUploadModal">
+        <i class="fas fa-upload me-1"></i> Upload a Paper
+      </button>
+    </div>
+
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label for="filterBranch" class="form-label">Branch</label>
+        <select id="filterBranch" class="form-select">
+          <option value="">All Branches</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="filterSem" class="form-label">Semester</label>
+        <select id="filterSem" class="form-select">
+          <option value="">All Semesters</option>
+          <option value="1">Semester 1</option>
+          <option value="2">Semester 2</option>
+          <option value="3">Semester 3</option>
+          <option value="4">Semester 4</option>
+          <option value="5">Semester 5</option>
+          <option value="6">Semester 6</option>
+          <option value="7">Semester 7</option>
+          <option value="8">Semester 8</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="filterSubject" class="form-label">Subject or keyword</label>
+        <input id="filterSubject" type="search" class="form-control"
+          placeholder="Try Java, SQL, DBMS...">
+      </div>
+      <div class="col-md-3">
+        <label for="filterYear" class="form-label">Exam Year</label>
+        <select id="filterYear" class="form-select">
+          <option value="">All Years</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button type="button" id="clearFilters" class="btn btn-outline-secondary btn-sm">
+          <i class="fas fa-times me-1"></i>Clear Filters
+        </button>
+        <button type="button" id="refreshPapers" class="btn btn-outline-primary btn-sm ms-1">
+          <i class="fas fa-rotate me-1"></i>Refresh
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <h5 class="fw-bold mb-0">Uploaded Question Papers</h5>
+      <span class="small text-muted" id="paperCount" aria-live="polite">Loading papers...</span>
+    </div>
+    <div id="paperList" aria-live="polite">
+      <div class="status-message">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 mb-0">Loading papers from the database...</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Upload Paper Modal -->
+<div class="modal fade" id="paperUploadModal" tabindex="-1"
+  aria-labelledby="paperUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="paperUploadModalLabel">
+          <i class="fas fa-file-pdf text-danger me-2"></i>Upload Previous Paper
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="paperUploadMessage" class="alert d-none" role="alert" aria-live="polite"></div>
+
+        <form id="paperUploadForm" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="paperTitle" class="form-label fw-semibold">Paper Title *</label>
+            <input type="text" id="paperTitle" name="title" class="form-control"
+              required maxlength="200" placeholder="e.g. Java Programming End-Sem Paper">
+          </div>
+
+          <div class="mb-3">
+            <label for="paperDescription" class="form-label fw-semibold">Description *</label>
+            <textarea id="paperDescription" name="description" class="form-control"
+              required maxlength="2000" rows="2"
+              placeholder="Add details about the examination"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="paperSubject" class="form-label fw-semibold">Subject *</label>
+            <select id="paperSubject" name="subject" class="form-select" required>
+              <option value="">Select a subject</option>
+              <option value="Java Programming">Java Programming</option>
+              <option value="Database Management Systems">Database Management Systems</option>
+              <option value="Data Structures">Data Structures</option>
+              <option value="Computer Networks">Computer Networks</option>
+              <option value="Operating systems">Operating systems</option>
+            </select>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label for="paperSemester" class="form-label fw-semibold">Semester *</label>
+              <select id="paperSemester" name="semester" class="form-select" required>
+                <option value="">Select</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="paperExamYear" class="form-label fw-semibold">Exam Year *</label>
+              <input type="number" id="paperExamYear" name="examYear"
+                class="form-control" required min="2000" max="2100" placeholder="2025">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="paperFile" class="form-label fw-semibold">Question Paper PDF *</label>
+            <input type="file" id="paperFile" name="file" class="form-control"
+              accept=".pdf,application/pdf" required>
+            <div class="form-text">PDF only. Maximum size: 20 MB.</div>
+          </div>
+
+          <button type="submit" id="paperUploadSubmit" class="btn btn-primary w-100">
+            <i class="fas fa-upload me-2"></i>Upload Paper
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="footer-brand mb-2">Acad<span>Bridge</span></div>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.6)">
+          A student-driven academic knowledge-sharing platform.
+        </p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="previous-papers.html">Previous Papers</a></li>
+          <li><a href="study-paths.html">Study Paths</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-library.html">My Library</a></li>
+          <li><a href="upload.html">Upload</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">&copy; 2026 AcadBridge · College Project</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+"use strict";
+
+(() => {
+  const $ = id => document.getElementById(id);
+
+  const paperList = $("paperList");
+  const paperCount = $("paperCount");
+  const totalPapers = $("totalPapers");
+  const subjectCount = $("subjectCount");
+  const visibleCount = $("visibleCount");
+
+  const filterBranch = $("filterBranch");
+  const filterSem = $("filterSem");
+  const filterSubject = $("filterSubject");
+  const filterYear = $("filterYear");
+
+  const uploadForm = $("paperUploadForm");
+  const uploadButton = $("paperUploadSubmit");
+  const uploadMessage = $("paperUploadMessage");
+
+  let allPapers = [];
+  let loadFailed = false;
+
+  function normalize(value) {
+    return String(value ?? "").trim().toLowerCase();
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    })[c]);
+  }
+
+  function getSubject(p) {
+    return String(p.subjectName ?? p.subject_name ?? p.subject ?? "").trim();
+  }
+
+  function getBranch(p) {
+    return String(p.branchName ?? p.branch_name ?? p.branch ?? "").trim();
+  }
+
+  function getSemester(p) {
+    return String(p.semesterNumber ?? p.semester_number ?? p.semester ?? "").trim();
+  }
+
+  function getYear(p) {
+    return String(p.examYear ?? p.exam_year ?? p.academicYear ?? p.academic_year ?? p.year ?? "").trim();
+  }
+
+  function getType(p) {
+    return normalize(p.resourceType ?? p.resource_type ?? p.type ?? p.category ?? "");
+  }
+
+  function isPaper(p) {
+    const type = getType(p);
+
+    if (type) {
+      return ["paper", "previous paper", "previous papers",
+        "question paper", "question papers"].includes(type);
+    }
+
+    const text = normalize([p.title, p.description, p.filePath].join(" "));
+    return /previous[\s_-]*(year[\s_-]*)?(question[\s_-]*)?papers?|question[\s_-]*papers?|past[\s_-]*papers?/.test(text);
+  }
+
+  function getId(p) {
+    const id = Number(p.resourceId ?? p.resource_id ?? p.id);
+    return Number.isSafeInteger(id) && id > 0 ? id : null;
+  }
+
+  function populateDropdown(select, values, label) {
+    const oldValue = select.value;
+    const unique = [...new Set(values.filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b));
+
+    select.replaceChildren();
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = label;
+    select.appendChild(first);
+
+    unique.forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      select.appendChild(option);
+    });
+
+    if (unique.includes(oldValue)) select.value = oldValue;
+  }
+
+  function populateFilters() {
+    populateDropdown(filterBranch, allPapers.map(getBranch), "All Branches");
+    populateDropdown(filterYear, allPapers.map(getYear), "All Years");
+  }
+
+  function clearFilters() {
+    filterBranch.value = "";
+    filterSem.value = "";
+    filterSubject.value = "";
+    filterYear.value = "";
+    renderPapers();
+  }
+
+  function renderPapers() {
+    if (loadFailed) return;
+
+    const branch = normalize(filterBranch.value);
+    const semester = filterSem.value;
+    const keyword = normalize(filterSubject.value);
+    const year = normalize(filterYear.value);
+
+    const filtered = allPapers.filter(p => {
+      if (branch && normalize(getBranch(p)) !== branch) return false;
+      if (semester && getSemester(p) !== semester) return false;
+      if (year && normalize(getYear(p)) !== year) return false;
+
+      const searchable = normalize([
+        p.title, p.description, getSubject(p), getBranch(p),
+        getSemester(p), getYear(p), p.uploadedBy, p.filePath
+      ].join(" "));
+
+      return !keyword || searchable.includes(keyword);
+    });
+
+    filtered.sort((a, b) => {
+      const da = Date.parse(a.createdAt ?? a.uploadedAt ?? "") || 0;
+      const db = Date.parse(b.createdAt ?? b.uploadedAt ?? "") || 0;
+      return db - da;
+    });
+
+    visibleCount.textContent = filtered.length;
+    paperCount.textContent =
+      `${filtered.length} paper${filtered.length === 1 ? "" : "s"} found`;
+
+    if (!filtered.length) {
+      paperList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-file-circle-question fa-2x mb-3"></i>
+          <h5 class="fw-bold">No question papers found</h5>
+          <p>${allPapers.length ? "Try changing your filters." : "No previous papers have been uploaded yet."}</p>
+          <button class="btn btn-outline-primary" type="button" id="emptyClear">Clear Filters</button>
+          <button class="btn btn-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#paperUploadModal">Upload a Paper</button>
+        </div>`;
+      $("emptyClear").addEventListener("click", clearFilters);
+      return;
+    }
+
+    paperList.innerHTML = filtered.map(p => {
+      const id = getId(p);
+      const title = escapeHTML(p.title || "Untitled question paper");
+      const subject = escapeHTML(getSubject(p) || "Subject not specified");
+      const branchName = escapeHTML(getBranch(p) || "Branch not specified");
+      const semesterValue = escapeHTML(getSemester(p) || "Not specified");
+      const yearValue = escapeHTML(getYear(p) || "Not specified");
+      const uploader = escapeHTML(p.uploadedBy || p.uploaderName || "AcadBridge student");
+      const description = escapeHTML(p.description || "");
+      const rawDate = p.createdAt ?? p.uploadedAt ?? "";
+      const date = rawDate && !Number.isNaN(Date.parse(rawDate))
+        ? new Date(rawDate).toLocaleDateString() : "";
+
+      // This URL requires a matching download endpoint in your backend.
+      const url = id ? `/api/resources/${id}/download` : "";
+
+      const actions = url ? `
+        <div class="paper-actions">
+          <a class="btn btn-outline-primary rounded-pill" href="${url}" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-eye me-1"></i>View
+          </a>
+          <a class="btn btn-primary rounded-pill" href="${url}">
+            <i class="fas fa-download me-1"></i>Download
+          </a>
+        </div>` : `<span class="small text-muted">Resource ID unavailable.</span>`;
+
+      return `
+        <article class="paper-card mb-3">
+          <div class="paper-info">
+            <h6><i class="fas fa-file-pdf text-danger me-2"></i>${title}
+              <span class="paper-tag">UPLOADED</span>
+            </h6>
+            <div class="paper-meta">
+              <div><i class="fas fa-book me-1"></i>${subject}</div>
+              <div><i class="fas fa-code-branch me-1"></i>${branchName}
+                <span class="mx-1">·</span>
+                <i class="fas fa-layer-group me-1"></i>Semester ${semesterValue}
+              </div>
+              <div><i class="fas fa-calendar me-1"></i>Exam year: ${yearValue}</div>
+              <div><i class="fas fa-user me-1"></i>${uploader}</div>
+              ${date ? `<div><i class="fas fa-clock me-1"></i>Uploaded: ${escapeHTML(date)}</div>` : ""}
+              ${description ? `<div class="mt-1">${description}</div>` : ""}
+            </div>
+          </div>
+          ${actions}
+        </article>`;
+    }).join("");
+  }
+
+  async function loadPapers() {
+    loadFailed = false;
+    paperList.innerHTML = `<div class="status-message">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3 mb-0">Loading papers from the database...</p>
+    </div>`;
+    paperCount.textContent = "Loading...";
+    totalPapers.textContent = "—";
+    subjectCount.textContent = "—";
+    visibleCount.textContent = "—";
+
+    try {
+      const response = await fetch("/api/resources", {
+        headers: { "Accept": "application/json" }
+      });
+
+      if (!response.ok) {
+        throw new Error("Resources API returned HTTP " + response.status);
+      }
+
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("Expected a JSON array from /api/resources.");
+      }
+
+      allPapers = data.filter(isPaper);
+
+      totalPapers.textContent = allPapers.length;
+      subjectCount.textContent =
+        new Set(allPapers.map(getSubject).filter(Boolean)).size;
+
+      populateFilters();
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("branch")) {
+        const opt = [...filterBranch.options].find(o =>
+          normalize(o.value) === normalize(params.get("branch")));
+        if (opt) filterBranch.value = opt.value;
+      }
+      if (params.has("semester")) filterSem.value = params.get("semester");
+      if (params.has("subject")) filterSubject.value = params.get("subject");
+      if (params.has("year")) {
+        const opt = [...filterYear.options].find(o =>
+          normalize(o.value) === normalize(params.get("year")));
+        if (opt) filterYear.value = opt.value;
+      }
+
+      renderPapers();
+    } catch (error) {
+      console.error("Failed to load papers:", error);
+      loadFailed = true;
+      paperCount.textContent = "Unable to load papers";
+      paperList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-triangle-exclamation text-warning fa-2x mb-3"></i>
+          <h5 class="fw-bold">Could not load question papers</h5>
+          <p>Check that Spring Boot is running and /api/resources returns a JSON array.</p>
+          <button type="button" class="btn btn-primary" id="retryButton">Try Again</button>
+        </div>`;
+      $("retryButton").addEventListener("click", loadPapers);
+    }
+  }
+
+  uploadForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    uploadMessage.className = "alert d-none";
+    uploadMessage.textContent = "";
+
+    const file = $("paperFile").files[0];
+
+    if (!file) {
+      uploadMessage.className = "alert alert-danger";
+      uploadMessage.textContent = "Please select a PDF file.";
+      return;
+    }
+
+    if (!file.name.toLowerCase().endsWith(".pdf") ||
+        file.size > 20 * 1024 * 1024) {
+      uploadMessage.className = "alert alert-danger";
+      uploadMessage.textContent = "Select a PDF file no larger than 20 MB.";
+      return;
+    }
+
+    const formData = new FormData(uploadForm);
+
+    uploadButton.disabled = true;
+    uploadButton.innerHTML =
+      '<span class="spinner-border spinner-border-sm me-2"></span>Uploading...';
+
+    try {
+      const response = await fetch("/api/papers/upload", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.message || `Upload failed (HTTP ${response.status}).`);
+      }
+
+      uploadMessage.className = "alert alert-success";
+      uploadMessage.textContent =
+        result.message || "Paper uploaded successfully.";
+
+      uploadForm.reset();
+      await loadPapers();
+
+      setTimeout(() => {
+        const modal = bootstrap.Modal.getOrCreateInstance($("paperUploadModal"));
+        modal.hide();
+        uploadMessage.className = "alert d-none";
+      }, 1000);
+
+    } catch (error) {
+      console.error("Paper upload failed:", error);
+      uploadMessage.className = "alert alert-danger";
+      uploadMessage.textContent =
+        error.message || "Upload failed. Check the backend terminal.";
+    } finally {
+      uploadButton.disabled = false;
+      uploadButton.innerHTML = '<i class="fas fa-upload me-2"></i>Upload Paper';
+    }
+  });
+
+  filterBranch.addEventListener("change", renderPapers);
+  filterSem.addEventListener("change", renderPapers);
+  filterSubject.addEventListener("input", renderPapers);
+  filterYear.addEventListener("change", renderPapers);
+  $("clearFilters").addEventListener("click", clearFilters);
+  $("refreshPapers").addEventListener("click", loadPapers);
+
+  loadPapers();
+})();
+</script>
+</body>
+</html>

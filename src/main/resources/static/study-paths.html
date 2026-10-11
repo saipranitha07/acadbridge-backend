@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Paths — AcadBridge</title>
+  <meta name="description" content="Explore curated academic learning paths on AcadBridge.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    
+
+    .path-card {
+      height: 100%;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid #e5eaf0;
+      box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .path-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .09);
+    }
+
+    .path-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 24px;
+      color: #fff;
+    }
+
+    .path-header h4 {
+      margin: 0 0 7px;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .path-header span {
+      color: rgba(255,255,255,.85);
+      font-size: .83rem;
+    }
+
+    .path-icon {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(255,255,255,.18);
+      font-size: 28px;
+    }
+
+    .path-body {
+      padding: 23px;
+    }
+
+    .path-progress {
+      padding: 15px;
+      margin-bottom: 22px;
+      background: #f8fafc;
+      border: 1px solid #e8edf3;
+      border-radius: 10px;
+    }
+
+    .path-progress strong {
+      font-size: .9rem;
+      color: #1e293b;
+    }
+
+    .progress-label {
+      font-size: .82rem;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .path-progress .progress {
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .path-progress .progress-bar {
+      transition: width .25s ease;
+    }
+
+    .path-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding-bottom: 21px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid #edf0f4;
+    }
+
+    .path-step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .path-step-num {
+      width: 31px;
+      height: 31px;
+      min-width: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: .85rem;
+    }
+
+    .ps-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: #1e293b;
+      font-size: .94rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .topic-checkbox {
+      margin-top: 4px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .ps-desc {
+      margin-top: 5px;
+      color: #64748b;
+      font-size: .84rem;
+      line-height: 1.6;
+    }
+
+    .path-step.completed .ps-title {
+      color: #15803d;
+    }
+
+    .path-step.completed .ps-desc {
+      color: #64748b;
+    }
+
+    .path-step.completed .path-step-num {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .path-actions a {
+      text-decoration: none;
+    }
+
+    .path-search {
+      max-width: 460px;
+      margin: 0 auto 28px;
+    }
+
+    .path-search input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1px solid #dbe2ea;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .path-search input:focus {
+      outline: 2px solid rgba(37,99,235,.15);
+      border-color: #2563eb;
+    }
+
+    .no-paths {
+      display: none;
+      padding: 35px 15px;
+      text-align: center;
+      color: #64748b;
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+    }
+
+    .path-summary {
+      border: 1px solid #e5eaf0;
+      border-radius: 12px;
+      padding: 18px;
+      height: 100%;
+      background: #fff;
+    }
+
+    .path-summary i {
+      font-size: 1.35rem;
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+
+    .path-summary h5 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .path-summary p {
+      font-size: .83rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    @media (max-width: 576px) {
+      .path-header {
+        padding: 18px;
+      }
+
+      .path-body {
+        padding: 17px;
+      }
+
+      .path-header h4 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+</div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#mainNav"
+      aria-controls="mainNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-lg-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="resources.html"><i class="fas fa-folder-open me-1"></i>Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="previous-papers.html"><i class="fas fa-scroll me-1"></i>Papers</a></li>
+        <li class="nav-item"><a class="nav-link active" href="study-paths.html"><i class="fas fa-route me-1"></i>Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html"><i class="fas fa-upload me-1"></i>Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html"><i class="fas fa-bookmark me-1"></i>My Library</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="login.html" class="nav-link text-white-50">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Page heading -->
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Study Paths</li>
+      </ol>
+    </nav>
+
+    <h1><i class="fas fa-route me-2"></i>Curated Study Paths</h1>
+    <p>Learn step by step with structured roadmaps curated for students.</p>
+  </div>
+</div>
+
+<main class="container py-5">
+
+  <!-- Summary cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="path-summary">
+        <i class="fas fa-book-open"></i>
+        <h5>4</h5>
+        <p>Learning paths</p>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="path-summary">
+        <i class="fas fa-list-check"></i>
+        <h5 id="totalTopics">30</h5>
+        <p>Learning topics</p>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="path-summary">
+        <i class="fas fa-clock"></i>
+        <h5>118 hrs</h5>
+        <p>Estimated learning time</p>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="path-summary">
+        <i class="fas fa-check-circle"></i>
+        <h5 id="completedTopics">0</h5>
+        <p>Topics completed in this demo</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-4">
+    <div class="section-title">
+      <h2>Choose Your Learning Path</h2>
+      <p>Follow each roadmap at your own pace and mark topics as you complete them.</p>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+
+  <!-- Search paths -->
+  <div class="path-search">
+    <input id="pathSearch" type="search"
+      placeholder="Search Java, DBMS, SQL, arrays..."
+      aria-label="Search learning paths">
+  </div>
+
+  <div class="row g-4" id="pathGrid">
+
+    <!-- Java -->
+    <div class="col-lg-6 path-column" data-path="java programming oop jdbc collections">
+      <article class="path-card" data-path-card>
+        <div class="path-header" style="background:linear-gradient(135deg,#1E3A5F,#1E90FF)">
+          <div class="path-icon">☕</div>
+          <div>
+            <h4>Java Programming</h4>
+            <span>CSE · Semester 4 · 8 topics · ~30 hours</span>
+          </div>
+        </div>
+
+        <div class="path-body">
+          <div class="path-progress">
+            <div class="d-flex justify-content-between mb-2">
+              <strong>Learning Progress</strong>
+              <span class="progress-label">0% completed</span>
+            </div>
+            <div class="progress" style="height:8px">
+              <div class="progress-bar" role="progressbar"
+                style="width:0%;background:#2563eb"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2 reset-progress">
+              <i class="fas fa-rotate-left me-1"></i>Reset progress
+            </button>
+          </div>
+
+          <div class="path-step">
+            <div class="path-step-num">1</div>
+            <div>
+              <div class="ps-title">OOP Fundamentals</div>
+              <div class="ps-desc">Classes, objects, constructors, access modifiers and encapsulation.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">2</div>
+            <div>
+              <div class="ps-title">Inheritance &amp; Polymorphism</div>
+              <div class="ps-desc">Inheritance types, method overriding and abstract classes.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">3</div>
+            <div>
+              <div class="ps-title">Collections Framework</div>
+              <div class="ps-desc">List, Set, Map, Iterator and generics.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">4</div>
+            <div>
+              <div class="ps-title">Exception Handling &amp; I/O</div>
+              <div class="ps-desc">Try-catch-finally, custom exceptions and file streams.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">5</div>
+            <div>
+              <div class="ps-title">Multithreading</div>
+              <div class="ps-desc">Thread, Runnable, synchronisation and thread lifecycle.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">6</div>
+            <div>
+              <div class="ps-title">JDBC &amp; Database Connectivity</div>
+              <div class="ps-desc">Connection, PreparedStatement, ResultSet and database access.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">7</div>
+            <div>
+              <div class="ps-title">Swing / JavaFX Basics</div>
+              <div class="ps-desc">GUI components, event listeners and layout managers.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">8</div>
+            <div>
+              <div class="ps-title">Mini Project Practice</div>
+              <div class="ps-desc">Apply your concepts in a student management mini project.</div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-3 border-top d-flex gap-2 flex-wrap path-actions">
+            <a href="resources.html?subject=Java%20Programming" class="btn-primary-custom">
+              <i class="fas fa-folder-open me-1"></i>Java Resources
+            </a>
+            <a href="previous-papers.html" class="btn-secondary-custom">
+              <i class="fas fa-scroll me-1"></i>Previous Papers
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- DBMS -->
+    <div class="col-lg-6 path-column" data-path="dbms database sql er modelling normalization">
+      <article class="path-card" data-path-card>
+        <div class="path-header" style="background:linear-gradient(135deg,#14532D,#22C55E)">
+          <div class="path-icon">🗄️</div>
+          <div>
+            <h4>Database Management (DBMS)</h4>
+            <span>CSE · Semester 4 · 7 topics · ~25 hours</span>
+          </div>
+        </div>
+
+        <div class="path-body">
+          <div class="path-progress">
+            <div class="d-flex justify-content-between mb-2">
+              <strong>Learning Progress</strong>
+              <span class="progress-label">0% completed</span>
+            </div>
+            <div class="progress" style="height:8px">
+              <div class="progress-bar" role="progressbar"
+                style="width:0%;background:#16a34a"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2 reset-progress">
+              <i class="fas fa-rotate-left me-1"></i>Reset progress
+            </button>
+          </div>
+
+          <div class="path-step">
+            <div class="path-step-num">1</div>
+            <div>
+              <div class="ps-title">Database Concepts &amp; Architecture</div>
+              <div class="ps-desc">DBMS vs RDBMS, three-tier architecture and data models.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">2</div>
+            <div>
+              <div class="ps-title">ER Modelling</div>
+              <div class="ps-desc">Entities, attributes, relationships and ER diagrams.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">3</div>
+            <div>
+              <div class="ps-title">Relational Model &amp; Keys</div>
+              <div class="ps-desc">Primary, foreign and candidate keys, relational algebra.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">4</div>
+            <div>
+              <div class="ps-title">SQL — DDL, DML, DCL, TCL</div>
+              <div class="ps-desc">CREATE, SELECT, JOIN, GROUP BY, subqueries and views.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">5</div>
+            <div>
+              <div class="ps-title">Normalisation (1NF–BCNF)</div>
+              <div class="ps-desc">Functional dependencies, anomalies and decomposition.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">6</div>
+            <div>
+              <div class="ps-title">Transaction Management</div>
+              <div class="ps-desc">ACID properties, concurrency control and deadlocks.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">7</div>
+            <div>
+              <div class="ps-title">Indexing &amp; File Organisation</div>
+              <div class="ps-desc">B-Trees, hashing and file organisation methods.</div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-3 border-top d-flex gap-2 flex-wrap path-actions">
+            <a href="resources.html?subject=DBMS" class="btn-primary-custom">
+              <i class="fas fa-folder-open me-1"></i>DBMS Resources
+            </a>
+            <a href="previous-papers.html" class="btn-secondary-custom">
+              <i class="fas fa-scroll me-1"></i>Previous Papers
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Data Structures -->
+    <div class="col-lg-6 path-column" data-path="data structures algorithms arrays trees graphs sorting">
+      <article class="path-card" data-path-card>
+        <div class="path-header" style="background:linear-gradient(135deg,#581C87,#A855F7)">
+          <div class="path-icon">📊</div>
+          <div>
+            <h4>Data Structures &amp; Algorithms</h4>
+            <span>CSE · Semester 3 · 8 topics · ~35 hours</span>
+          </div>
+        </div>
+
+        <div class="path-body">
+          <div class="path-progress">
+            <div class="d-flex justify-content-between mb-2">
+              <strong>Learning Progress</strong>
+              <span class="progress-label">0% completed</span>
+            </div>
+            <div class="progress" style="height:8px">
+              <div class="progress-bar" role="progressbar"
+                style="width:0%;background:#9333ea"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2 reset-progress">
+              <i class="fas fa-rotate-left me-1"></i>Reset progress
+            </button>
+          </div>
+
+          <div class="path-step">
+            <div class="path-step-num">1</div>
+            <div>
+              <div class="ps-title">Arrays &amp; Strings</div>
+              <div class="ps-desc">One-dimensional and two-dimensional arrays, string operations.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">2</div>
+            <div>
+              <div class="ps-title">Linked Lists</div>
+              <div class="ps-desc">Singly, doubly and circular lists; insertion and deletion.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">3</div>
+            <div>
+              <div class="ps-title">Stacks &amp; Queues</div>
+              <div class="ps-desc">Stack operations, infix-to-postfix and circular queues.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">4</div>
+            <div>
+              <div class="ps-title">Trees &amp; Binary Search Trees</div>
+              <div class="ps-desc">Tree traversals, binary search trees and AVL trees.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">5</div>
+            <div>
+              <div class="ps-title">Graphs</div>
+              <div class="ps-desc">BFS, DFS, Dijkstra, Prim and Kruskal algorithms.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">6</div>
+            <div>
+              <div class="ps-title">Sorting &amp; Searching</div>
+              <div class="ps-desc">Bubble, Quick, Merge and Heap sort; binary search.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">7</div>
+            <div>
+              <div class="ps-title">Hashing</div>
+              <div class="ps-desc">Hash functions, collisions and chaining.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">8</div>
+            <div>
+              <div class="ps-title">Dynamic Programming</div>
+              <div class="ps-desc">Memoisation, tabulation and common DP problems.</div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-3 border-top d-flex gap-2 flex-wrap path-actions">
+            <a href="resources.html?q=Data%20Structures" class="btn-primary-custom">
+              <i class="fas fa-folder-open me-1"></i>DS Resources
+            </a>
+            <a href="previous-papers.html" class="btn-secondary-custom">
+              <i class="fas fa-scroll me-1"></i>Previous Papers
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Web Technology -->
+    <div class="col-lg-6 path-column" data-path="web technology html css javascript bootstrap">
+      <article class="path-card" data-path-card>
+        <div class="path-header" style="background:linear-gradient(135deg,#9A3412,#F97316)">
+          <div class="path-icon">🌐</div>
+          <div>
+            <h4>Web Technology</h4>
+            <span>CSE · Semester 6 · 7 topics · ~28 hours</span>
+          </div>
+        </div>
+
+        <div class="path-body">
+          <div class="path-progress">
+            <div class="d-flex justify-content-between mb-2">
+              <strong>Learning Progress</strong>
+              <span class="progress-label">0% completed</span>
+            </div>
+            <div class="progress" style="height:8px">
+              <div class="progress-bar" role="progressbar"
+                style="width:0%;background:#ea580c"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2 reset-progress">
+              <i class="fas fa-rotate-left me-1"></i>Reset progress
+            </button>
+          </div>
+
+          <div class="path-step">
+            <div class="path-step-num">1</div>
+            <div>
+              <div class="ps-title">HTML5 Fundamentals</div>
+              <div class="ps-desc">Semantic elements, forms, multimedia and accessibility basics.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">2</div>
+            <div>
+              <div class="ps-title">CSS3 &amp; Layouts</div>
+              <div class="ps-desc">Box model, Flexbox, Grid, animations and responsive design.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">3</div>
+            <div>
+              <div class="ps-title">JavaScript ES6+</div>
+              <div class="ps-desc">Variables, functions, promises, async/await and the DOM.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">4</div>
+            <div>
+              <div class="ps-title">Bootstrap 5 Framework</div>
+              <div class="ps-desc">Grid system, components and responsive utility classes.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">5</div>
+            <div>
+              <div class="ps-title">AJAX &amp; Fetch API</div>
+              <div class="ps-desc">Fetch requests, JSON handling and REST API basics.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">6</div>
+            <div>
+              <div class="ps-title">Backend &amp; REST Concepts</div>
+              <div class="ps-desc">Server-side programming, routing and API concepts.</div>
+            </div>
+          </div>
+          <div class="path-step">
+            <div class="path-step-num">7</div>
+            <div>
+              <div class="ps-title">Full-Stack Mini Project</div>
+              <div class="ps-desc">Build a CRUD application using frontend and backend concepts.</div>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-3 border-top d-flex gap-2 flex-wrap path-actions">
+            <a href="resources.html?q=Web%20Technology" class="btn-primary-custom">
+              <i class="fas fa-folder-open me-1"></i>Web Resources
+            </a>
+            <a href="previous-papers.html" class="btn-secondary-custom">
+              <i class="fas fa-scroll me-1"></i>Previous Papers
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </div>
+
+  <div class="no-paths mt-4" id="noPaths">
+    <i class="fas fa-search fa-2x mb-3"></i>
+    <h5>No matching study paths</h5>
+    <p>Try searching for Java, DBMS, Data Structures or Web Technology.</p>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="text-center mt-5 p-5 rounded-3"
+       style="background:linear-gradient(135deg,var(--navy),var(--navy-light))">
+    <h3 style="color:#fff;margin-bottom:.5rem">Ready to keep learning?</h3>
+    <p style="color:rgba(255,255,255,.75);margin-bottom:1.5rem">
+      Explore shared notes and practice with previous question papers.
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="resources.html" class="btn-primary-custom">
+        <i class="fas fa-search me-1"></i>Browse Resources
+      </a>
+      <a href="previous-papers.html" class="btn-secondary-custom"
+         style="color:#fff;border-color:rgba(255,255,255,.5)">
+        <i class="fas fa-scroll me-1"></i>Previous Papers
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="footer-brand mb-2">Acad<span>Bridge</span></div>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.6)">
+          Student-driven academic knowledge sharing. Demo learning paths.
+        </p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="previous-papers.html">Papers</a></li>
+          <li><a href="study-paths.html">Study Paths</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-4">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-library.html">My Library</a></li>
+          <li><a href="upload.html">Upload</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      &copy; 2026 AcadBridge · College Project Prototype
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = [...document.querySelectorAll("[data-path-card]")];
+
+  function updateOverallSummary() {
+    let total = 0;
+    let completed = 0;
+
+    cards.forEach(card => {
+      const checkboxes = [...card.querySelectorAll(".topic-checkbox")];
+      total += checkboxes.length;
+      completed += checkboxes.filter(box => box.checked).length;
+    });
+
+    document.getElementById("totalTopics").textContent = total;
+    document.getElementById("completedTopics").textContent = completed;
+  }
+
+  cards.forEach(card => {
+    const steps = [...card.querySelectorAll(".path-step")];
+    const progressBar = card.querySelector(".progress-bar");
+    const progressLabel = card.querySelector(".progress-label");
+    const resetButton = card.querySelector(".reset-progress");
+
+    steps.forEach(step => {
+      const title = step.querySelector(".ps-title");
+      const number = step.querySelector(".path-step-num");
+
+      if (!title) return;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "form-check-input topic-checkbox";
+      checkbox.setAttribute(
+        "aria-label",
+        "Mark " + title.textContent.trim() + " as completed"
+      );
+
+      title.prepend(checkbox);
+
+      checkbox.addEventListener("change", () => {
+        step.classList.toggle("completed", checkbox.checked);
+
+        if (number) {
+          number.innerHTML = checkbox.checked
+            ? '<i class="fas fa-check"></i>'
+            : String(steps.indexOf(step) + 1);
+        }
+
+        updateProgress();
+        updateOverallSummary();
+      });
+    });
+
+    function updateProgress() {
+      const boxes = [...card.querySelectorAll(".topic-checkbox")];
+      const completed = boxes.filter(box => box.checked).length;
+      const percentage = boxes.length
+        ? Math.round(completed / boxes.length * 100)
+        : 0;
+
+      progressBar.style.width = percentage + "%";
+      progressBar.setAttribute("aria-valuenow", percentage);
+      progressLabel.textContent = percentage + "% completed";
+    }
+
+    resetButton.addEventListener("click", () => {
+      card.querySelectorAll(".path-step").forEach((step, index) => {
+        const checkbox = step.querySelector(".topic-checkbox");
+        const number = step.querySelector(".path-step-num");
+
+        if (checkbox) checkbox.checked = false;
+        step.classList.remove("completed");
+
+        if (number) number.textContent = index + 1;
+      });
+
+      updateProgress();
+      updateOverallSummary();
+    });
+
+    updateProgress();
+  });
+
+  // Search by subject name or related keywords.
+  const search = document.getElementById("pathSearch");
+  const columns = [...document.querySelectorAll(".path-column")];
+  const noPaths = document.getElementById("noPaths");
+
+  search.addEventListener("input", () => {
+    const query = search.value.trim().toLowerCase();
+    let visible = 0;
+
+    columns.forEach(column => {
+      const text = (
+        column.dataset.path + " " + column.innerText
+      ).toLowerCase();
+
+      const matches = text.includes(query);
+      column.style.display = matches ? "" : "none";
+
+      if (matches) visible++;
+    });
+
+    noPaths.style.display = visible ? "none" : "block";
+  });
+
+  updateOverallSummary();
+});
+</script>
+
+</body>
+</html>

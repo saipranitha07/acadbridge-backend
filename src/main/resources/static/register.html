@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — AcadBridge</title>
+  <meta name="description" content="Create your AcadBridge student account." />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <style>
+    .register-message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .register-message.success {
+      display: block;
+      background: #e7f7ed;
+      color: #176b37;
+    }
+
+    .register-message.error {
+      display: block;
+      background: #fdeaea;
+      color: #a32121;
+    }
+
+    .password-group {
+      position: relative;
+      display: flex;
+      width: 100%;
+    }
+
+    .password-group .form-control {
+      padding-right: 48px;
+    }
+
+    .btn-toggle-pw {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #526174;
+      padding: 6px;
+      cursor: pointer;
+      z-index: 5;
+      line-height: 1;
+    }
+
+    .btn-toggle-pw:hover {
+      color: #1769aa;
+    }
+
+    .btn-toggle-pw:focus-visible {
+      outline: 2px solid #1769aa;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .password-group .form-control.is-invalid {
+      background-image: none;
+      padding-right: 48px;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="previous-papers.html">Papers</a></li>
+        <li class="nav-item"><a class="nav-link" href="study-paths.html">Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html">My Library</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="login.html" class="nav-link">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="form-page-wrap" style="padding:2rem 1rem">
+  <div class="form-card" style="max-width:520px">
+
+    <div class="text-center mb-3">
+      <div style="width:52px;height:52px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;margin-bottom:0.8rem">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+
+      <h2>Create Account</h2>
+      <p class="sub">Join AcadBridge — it's completely free!</p>
+    </div>
+
+    <div id="registerMessage"
+         class="register-message"
+         role="status"
+         aria-live="polite"></div>
+
+    <form id="registerForm" novalidate>
+      <div class="row g-3">
+
+        <div class="col-sm-6">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" id="firstName" class="form-control"
+                 placeholder="Priya" required />
+          <div class="invalid-feedback">Enter your first name.</div>
+        </div>
+
+        <div class="col-sm-6">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" id="lastName" class="form-control"
+                 placeholder="Sharma" required />
+          <div class="invalid-feedback">Enter your last name.</div>
+        </div>
+
+        <div class="col-12">
+          <label for="regEmail" class="form-label">College Email</label>
+          <input type="email" id="regEmail" class="form-control"
+                 placeholder="you@college.edu" required />
+          <div class="invalid-feedback">Enter a valid email address.</div>
+        </div>
+
+        <div class="col-sm-6">
+          <label for="rollNo" class="form-label">Roll Number</label>
+          <input type="text" id="rollNo" class="form-control"
+                 placeholder="21CS001" required />
+          <div class="invalid-feedback">Enter your roll number.</div>
+        </div>
+
+        <div class="col-sm-6">
+          <label for="batch" class="form-label">Batch / Admission Year</label>
+          <select id="batch" class="form-select" required>
+            <option value="">Select…</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+          </select>
+          <div class="invalid-feedback">Select your batch.</div>
+        </div>
+
+        <div class="col-sm-6">
+          <label for="branch" class="form-label">Branch</label>
+          <select id="branch" class="form-select" required>
+            <option value="">Select…</option>
+            <option value="Computer Science and Engineering">CSE</option>
+            <option value="Information Technology">IT</option>
+            <option value="Electronics and Communication Engineering">ECE</option>
+            <option value="Electrical and Electronics Engineering">EEE</option>
+            <option value="Mechanical Engineering">Mechanical</option>
+            <option value="Civil Engineering">Civil</option>
+          </select>
+          <div class="invalid-feedback">Select your branch.</div>
+        </div>
+
+        <div class="col-sm-6">
+          <label for="semester" class="form-label">Current Semester</label>
+          <select id="semester" class="form-select" required>
+            <option value="">Select…</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          <div class="invalid-feedback">Select your semester.</div>
+        </div>
+
+        <div class="col-12">
+          <label for="regPassword" class="form-label">Password</label>
+
+          <div class="password-group">
+            <input type="password" id="regPassword"
+                   class="form-control"
+                   placeholder="Min. 8 characters"
+                   required minlength="8"
+                   autocomplete="new-password" />
+
+            <button type="button"
+                    class="btn-toggle-pw"
+                    data-password-target="regPassword"
+                    aria-label="Show password"
+                    aria-pressed="false">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="invalid-feedback">
+            Password must be at least 8 characters.
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+
+          <div class="password-group">
+            <input type="password" id="confirmPassword"
+                   class="form-control"
+                   placeholder="Repeat your password"
+                   required
+                   autocomplete="new-password" />
+
+            <button type="button"
+                    class="btn-toggle-pw"
+                    data-password-target="confirmPassword"
+                    aria-label="Show confirmation password"
+                    aria-pressed="false">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="invalid-feedback">
+            Passwords must match.
+          </div>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" id="registerButton"
+                  class="btn-primary-custom w-100 justify-content-center">
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+            Create My Account
+          </button>
+        </div>
+
+        <div class="col-12 text-center"
+             style="font-size:0.88rem;color:var(--text-mid)">
+          Already have an account?
+          <a href="login.html" style="font-weight:600">Login here</a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  const registerForm = document.getElementById('registerForm');
+  const registerButton = document.getElementById('registerButton');
+  const registerMessage = document.getElementById('registerMessage');
+  const passwordInput = document.getElementById('regPassword');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+
+  function displayMessage(message, type) {
+    registerMessage.textContent = message;
+    registerMessage.className = 'register-message ' + type;
+  }
+
+  // Show or hide each password independently.
+  document.querySelectorAll('[data-password-target]').forEach(button => {
+    button.addEventListener('click', () => {
+      const input = document.getElementById(button.dataset.passwordTarget);
+      const icon = button.querySelector('i');
+      const showPassword = input.type === 'password';
+
+      input.type = showPassword ? 'text' : 'password';
+      button.setAttribute('aria-pressed', String(showPassword));
+      button.setAttribute(
+        'aria-label',
+        showPassword ? 'Hide password' : 'Show password'
+      );
+
+      icon.classList.toggle('fa-eye', !showPassword);
+      icon.classList.toggle('fa-eye-slash', showPassword);
+    });
+  });
+
+  // Clear confirmation error as the student corrects the password.
+  confirmPasswordInput.addEventListener('input', () => {
+    confirmPasswordInput.setCustomValidity('');
+    confirmPasswordInput.classList.remove('is-invalid');
+  });
+
+  registerForm.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    registerMessage.className = 'register-message';
+    confirmPasswordInput.setCustomValidity('');
+    confirmPasswordInput.classList.remove('is-invalid');
+    registerForm.classList.add('was-validated');
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      confirmPasswordInput.setCustomValidity('Passwords do not match.');
+      confirmPasswordInput.classList.add('is-invalid');
+      displayMessage('The passwords do not match.', 'error');
+      return;
+    }
+
+    if (!registerForm.checkValidity()) {
+      displayMessage(
+        'Please complete all required fields correctly.',
+        'error'
+      );
+      return;
+    }
+
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = passwordInput.value;
+    const branch = document.getElementById('branch').value;
+    const batchYear = document.getElementById('batch').value;
+
+    registerButton.disabled = true;
+    registerButton.innerHTML =
+      '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Creating account...';
+
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fullName: firstName + ' ' + lastName,
+          email: email,
+          password: password,
+          branch: branch,
+          batchYear: batchYear
+        })
+      });
+
+      const responseText = await response.text();
+      let data = {};
+
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch (_) {
+        data = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail ||
+          data.message ||
+          (response.status === 409
+            ? 'An account with this email already exists.'
+            : 'Registration failed. Please check the server.')
+        );
+      }
+
+      displayMessage(
+        'Account saved successfully! Redirecting to login…',
+        'success'
+      );
+
+      registerForm.reset();
+      registerForm.classList.remove('was-validated');
+
+      // Return both password fields to their hidden state.
+      document.querySelectorAll('[data-password-target]').forEach(button => {
+        const input = document.getElementById(button.dataset.passwordTarget);
+        const icon = button.querySelector('i');
+
+        input.type = 'password';
+        button.setAttribute('aria-pressed', 'false');
+        button.setAttribute(
+          'aria-label',
+          button.dataset.passwordTarget === 'regPassword'
+            ? 'Show password'
+            : 'Show confirmation password'
+        );
+
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      });
+
+      window.setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
+
+    } catch (error) {
+      displayMessage(
+        error.message ||
+        'Could not connect to the backend. Please try again.',
+        'error'
+      );
+
+    } finally {
+      registerButton.disabled = false;
+      registerButton.innerHTML =
+        '<i class="fas fa-user-plus" aria-hidden="true"></i> Create My Account';
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,873 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources — AcadBridge</title>
+  <meta name="description" content="Browse, search, filter and bookmark academic resources on AcadBridge.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .filter-group {
+      margin-bottom: 22px;
+    }
+
+    .filter-group h6 {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .filter-select {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      color: #263449;
+      background: #fff;
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      font-size: .9rem;
+    }
+
+    .filter-select:focus,
+    #searchInput:focus {
+      outline: 2px solid rgba(37, 99, 235, .2);
+      border-color: var(--blue);
+    }
+
+    .resource-card {
+      height: 100%;
+    }
+
+    .resource-card .card-custom {
+      height: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .resource-description {
+      overflow-wrap: anywhere;
+    }
+
+    .resource-filter-message {
+      padding: 30px 18px;
+      border: 1px solid #e5eaf0;
+      border-radius: 12px;
+      text-align: center;
+      background: #fff;
+      color: #64748b;
+    }
+
+    .subject-filter-note {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-mid);
+      font-size: .78rem;
+    }
+
+    /* Bookmark button */
+    .bookmark-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border: 1px solid #dbe2ea;
+      border-radius: 50%;
+      background: #fff;
+      color: #64748b;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .bookmark-btn:hover {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .bookmark-btn.is-bookmarked {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #2563eb;
+    }
+
+    .bookmark-btn:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, .3);
+      outline-offset: 2px;
+    }
+
+    .bookmark-btn i {
+      font-size: 1rem;
+    }
+
+    @media (max-width: 767px) {
+      .sort-bar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      #resultsCount {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-lg-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="resources.html"><i class="fas fa-folder-open"></i> Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="previous-papers.html"><i class="fas fa-scroll"></i> Papers</a></li>
+        <li class="nav-item"><a class="nav-link" href="study-paths.html"><i class="fas fa-route"></i> Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html"><i class="fas fa-upload"></i> Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html"><i class="fas fa-bookmark"></i> My Library</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="login.html" class="nav-link text-white-50">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Page heading -->
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Resources</li>
+      </ol>
+    </nav>
+
+    <h1><i class="fas fa-folder-open me-2"></i>Academic Resources</h1>
+    <p>Browse, search, and filter materials shared by students across subjects and branches.</p>
+  </div>
+</div>
+
+<main class="container py-4">
+
+  <!-- Search -->
+  <div class="search-bar-wrap">
+    <div class="search-bar-inner">
+      <i class="fas fa-search" style="color:var(--text-light)"></i>
+      <input type="search" id="searchInput"
+             placeholder="Search notes, subjects, topics, contributors..."
+             aria-label="Search academic resources">
+      <button class="btn-search-main" id="searchBtn" type="button">
+        <i class="fas fa-search me-1"></i> Search
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Filter sidebar -->
+    <aside class="col-lg-3">
+      <div class="filter-sidebar">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="m-0">Filters</h6>
+          <button id="clearFilters" type="button"
+                  style="background:none;border:none;color:var(--blue);font-size:.82rem;font-weight:600;cursor:pointer">
+            Clear All
+          </button>
+        </div>
+
+        <div class="filter-group">
+          <h6><i class="fas fa-book me-1"></i> Subject Name</h6>
+          <select id="subjectFilter" class="filter-select">
+            <option value="">All Subjects</option>
+            <option value="Java Programming">Java Programming</option>
+            <option value="DBMS">DBMS</option>
+            <option value="Data Structures">Data Structures</option>
+            <option value="Computer Networks">Computer Networks</option>
+            <option value="Operating Systems">Operating Systems</option>
+          </select>
+          <small class="subject-filter-note">Choose a subject to show its resources.</small>
+        </div>
+
+        <div class="filter-group">
+          <h6><i class="fas fa-graduation-cap me-1"></i> Branch</h6>
+          <select id="branchFilter" class="filter-select">
+            <option value="">All Branches</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="Civil">Civil</option>
+            <option value="Common">Common</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h6><i class="fas fa-file-alt me-1"></i> Resource Type</h6>
+          <select id="typeFilter" class="filter-select">
+            <option value="">All Types</option>
+            <option value="notes">Class Notes</option>
+            <option value="paper">Previous Papers</option>
+            <option value="lab">Lab Manuals</option>
+            <option value="assignment">Assignments</option>
+            <option value="ppt">Presentations</option>
+            <option value="study">Study Material</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h6><i class="fas fa-calendar-alt me-1"></i> Semester</h6>
+          <select id="semesterFilter" class="filter-select">
+            <option value="">All Semesters</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
+          </select>
+        </div>
+
+        <div class="p-3 rounded-3 text-center"
+             style="background:linear-gradient(135deg,var(--navy),var(--navy-light))">
+          <i class="fas fa-upload"
+             style="color:var(--blue-light);font-size:1.5rem;margin-bottom:.5rem;display:block"></i>
+          <p style="color:rgba(255,255,255,.8);font-size:.82rem;margin-bottom:.8rem">
+            Share your notes and help others!
+          </p>
+          <a href="upload.html"
+             style="background:var(--blue);color:#fff;border-radius:50px;padding:6px 18px;font-size:.82rem;font-weight:600;text-decoration:none">
+            Upload Now
+          </a>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Resource results -->
+    <section class="col-lg-9" aria-label="Resource results">
+
+      <div class="sort-bar d-flex align-items-center flex-wrap gap-2 mb-3">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" class="filter-select"
+                style="width:auto;min-width:150px;margin-top:0">
+          <option value="newest">Newest First</option>
+          <option value="title">Title A–Z</option>
+        </select>
+
+        <span class="results-count" id="resultsCount" aria-live="polite">
+          Loading resources...
+        </span>
+      </div>
+
+      <div class="row g-4" id="resourceGrid">
+        <div class="col-12 text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted mt-2">Loading resources from the database...</p>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="footer-brand mb-2">Acad<span>Bridge</span></div>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.6)">
+          Student-driven academic knowledge sharing.
+        </p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="study-paths.html">Study Paths</a></li>
+          <li><a href="previous-papers.html">Papers</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-4">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-library.html">My Library</a></li>
+          <li><a href="upload.html">Upload</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+    <div class="footer-bottom">&copy; 2026 AcadBridge · College Project</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const searchInput = $("searchInput");
+  const subjectFilter = $("subjectFilter");
+  const branchFilter = $("branchFilter");
+  const typeFilter = $("typeFilter");
+  const semesterFilter = $("semesterFilter");
+  const sortSelect = $("sortSelect");
+  const resourceGrid = $("resourceGrid");
+  const resultsCount = $("resultsCount");
+
+  let resources = [];
+  let loadingFailed = false;
+
+  const BOOKMARK_STORAGE_KEY = "acadbridge_bookmarks";
+
+  function getBookmarks() {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem(BOOKMARK_STORAGE_KEY) || "[]"
+      );
+
+      if (!Array.isArray(saved)) return new Set();
+
+      return new Set(saved.map(String).filter(id => id.length > 0));
+    } catch (error) {
+      console.error("Could not read bookmarks:", error);
+      return new Set();
+    }
+  }
+
+  function saveBookmarks(bookmarks) {
+    try {
+      localStorage.setItem(
+        BOOKMARK_STORAGE_KEY,
+        JSON.stringify([...bookmarks])
+      );
+      return true;
+    } catch (error) {
+      console.error("Could not save bookmarks:", error);
+      alert("Could not save this bookmark in your browser.");
+      return false;
+    }
+  }
+
+  function normalize(value) {
+    return String(value ?? "").trim().toLowerCase();
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character]);
+  }
+
+  function subjectOf(resource) {
+    return String(
+      resource.subject ??
+      resource.subjectName ??
+      resource.subject_name ??
+      ""
+    ).trim();
+  }
+
+  function branchOf(resource) {
+    return String(
+      resource.branch ??
+      resource.branchName ??
+      resource.branch_name ??
+      ""
+    ).trim();
+  }
+
+  function semesterOf(resource) {
+    return String(
+      resource.semester ??
+      resource.semesterNumber ??
+      resource.semester_number ??
+      ""
+    ).trim();
+  }
+
+  function subjectMatches(resourceSubject, selectedSubject) {
+    const actual = normalize(resourceSubject);
+    const selected = normalize(selectedSubject);
+
+    if (!selected || actual === selected) return true;
+
+    const aliases = {
+      "dbms": [
+        "dbms",
+        "database management systems",
+        "database management system"
+      ],
+      "java programming": [
+        "java",
+        "java programming",
+        "java programming language"
+      ],
+      "data structures": [
+        "data structures",
+        "data structure"
+      ],
+      "computer networks": [
+        "computer networks",
+        "computer network"
+      ],
+      "operating systems": [
+        "operating systems",
+        "operating system"
+      ]
+    };
+
+    const group = Object.values(aliases).find(names =>
+      names.includes(selected)
+    );
+
+    return Boolean(group && group.includes(actual));
+  }
+
+  function branchMatches(actualBranch, selectedBranch) {
+    const actual = normalize(actualBranch);
+    const selected = normalize(selectedBranch);
+
+    if (!selected || actual === selected) return true;
+
+    const aliases = {
+      "cse": ["cse", "computer science and engineering", "computer science"],
+      "ece": ["ece", "electronics and communication engineering"],
+      "eee": ["eee", "electrical and electronics engineering"],
+      "mechanical": ["mechanical", "mechanical engineering"],
+      "civil": ["civil", "civil engineering"],
+      "common": ["common", "all branches"]
+    };
+
+    const group = Object.values(aliases).find(names =>
+      names.includes(selected)
+    );
+
+    return Boolean(group && group.includes(actual));
+  }
+
+  function inferType(resource) {
+    const savedType = normalize(
+      resource.resourceType ??
+      resource.resource_type ??
+      resource.type ??
+      ""
+    );
+
+    const knownTypes = [
+      "notes", "paper", "lab", "assignment", "ppt", "study"
+    ];
+
+    if (knownTypes.includes(savedType)) return savedType;
+
+    const text = normalize([
+      resource.title,
+      resource.description,
+      resource.filePath
+    ].join(" "));
+
+    if (/previous paper|question paper|question bank|past paper/.test(text)) return "paper";
+    if (/lab manual|laboratory manual|lab record|lab experiment/.test(text)) return "lab";
+    if (/assignment|worksheet/.test(text)) return "assignment";
+    if (/\bppt\b|presentation|slides/.test(text)) return "ppt";
+    if (/study material|study guide|reference material/.test(text)) return "study";
+    if (/notes|lecture note|unit\s*\d/.test(text)) return "notes";
+
+    return "study";
+  }
+
+  function populateFilters() {
+    const knownSubjects = [
+      "Java Programming",
+      "DBMS",
+      "Data Structures",
+      "Computer Networks",
+      "Operating Systems"
+    ];
+
+    const actualSubjects = resources.map(subjectOf).filter(Boolean);
+    const subjectOptions = [...knownSubjects];
+
+    actualSubjects.forEach(subject => {
+      if (!subjectOptions.some(known => subjectMatches(subject, known))) {
+        subjectOptions.push(subject);
+      }
+    });
+
+    const previousSubject = subjectFilter.value;
+    subjectFilter.replaceChildren();
+
+    const allSubjects = document.createElement("option");
+    allSubjects.value = "";
+    allSubjects.textContent = "All Subjects";
+    subjectFilter.appendChild(allSubjects);
+
+    subjectOptions.forEach(subject => {
+      const option = document.createElement("option");
+      option.value = subject;
+      option.textContent = subject;
+      subjectFilter.appendChild(option);
+    });
+
+    if ([...subjectFilter.options].some(o => o.value === previousSubject)) {
+      subjectFilter.value = previousSubject;
+    }
+
+    const branchOptions = [
+      { label: "CSE", value: "CSE" },
+      { label: "ECE", value: "ECE" },
+      { label: "EEE", value: "EEE" },
+      { label: "Mechanical", value: "Mechanical" },
+      { label: "Civil", value: "Civil" },
+      { label: "Common", value: "Common" }
+    ];
+
+    const actualBranches = resources.map(branchOf).filter(Boolean);
+    const previousBranch = branchFilter.value;
+
+    branchFilter.replaceChildren();
+
+    const allBranches = document.createElement("option");
+    allBranches.value = "";
+    allBranches.textContent = "All Branches";
+    branchFilter.appendChild(allBranches);
+
+    branchOptions.forEach(branch => {
+      const option = document.createElement("option");
+      option.value = branch.value;
+      option.textContent = branch.label;
+      branchFilter.appendChild(option);
+    });
+
+    actualBranches.forEach(branch => {
+      if (!branchOptions.some(item => branchMatches(branch, item.value))) {
+        const option = document.createElement("option");
+        option.value = branch;
+        option.textContent = branch;
+        branchFilter.appendChild(option);
+      }
+    });
+
+    if ([...branchFilter.options].some(o => o.value === previousBranch)) {
+      branchFilter.value = previousBranch;
+    }
+  }
+
+  function resourceMatches(resource) {
+    const query = normalize(searchInput.value);
+    const selectedSubject = subjectFilter.value;
+    const selectedBranch = branchFilter.value;
+    const selectedType = typeFilter.value;
+    const selectedSemester = semesterFilter.value;
+
+    const searchableText = normalize([
+      resource.title,
+      resource.description,
+      subjectOf(resource),
+      branchOf(resource),
+      resource.uploadedBy,
+      resource.filePath
+    ].join(" "));
+
+    if (query && !searchableText.includes(query)) return false;
+
+    if (selectedSubject &&
+        !subjectMatches(subjectOf(resource), selectedSubject)) return false;
+
+    if (selectedBranch &&
+        !branchMatches(branchOf(resource), selectedBranch)) return false;
+
+    if (selectedType && inferType(resource) !== selectedType) return false;
+
+    if (selectedSemester && semesterOf(resource) !== selectedSemester) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function renderResources() {
+    if (loadingFailed) return;
+
+    const results = resources.filter(resourceMatches);
+
+    if (sortSelect.value === "title") {
+      results.sort((a, b) =>
+        String(a.title ?? "").localeCompare(String(b.title ?? ""))
+      );
+    } else {
+      results.sort((a, b) =>
+        (Date.parse(b.createdAt ?? "") || 0) -
+        (Date.parse(a.createdAt ?? "") || 0)
+      );
+    }
+
+    resultsCount.textContent =
+      `${results.length} resource${results.length === 1 ? "" : "s"} found`;
+
+    if (results.length === 0) {
+      resourceGrid.innerHTML = `
+        <div class="col-12">
+          <div class="resource-filter-message">
+            <i class="fas fa-search fa-2x mb-3"></i>
+            <h5>No matching resources found</h5>
+            <p>Try another subject or clear your filters.</p>
+            <button type="button" class="btn btn-primary" id="noResultsClear">
+              Clear Filters
+            </button>
+          </div>
+        </div>`;
+
+      $("noResultsClear").addEventListener("click", clearFilters);
+      return;
+    }
+
+    const bookmarks = getBookmarks();
+
+    resourceGrid.innerHTML = results.map(resource => {
+      const rawId = Number(resource.resourceId ?? resource.id);
+      const hasId = Number.isSafeInteger(rawId) && rawId > 0;
+      const isBookmarked = hasId && bookmarks.has(String(rawId));
+
+      const title = escapeHTML(resource.title || "Untitled resource");
+      const description = escapeHTML(
+        resource.description || "No description provided."
+      );
+      const subject = escapeHTML(subjectOf(resource) || "Subject not specified");
+      const branch = escapeHTML(branchOf(resource) || "Branch not specified");
+      const uploader = escapeHTML(resource.uploadedBy || "AcadBridge student");
+
+      const date = resource.createdAt &&
+        !Number.isNaN(Date.parse(resource.createdAt))
+        ? new Date(resource.createdAt).toLocaleDateString()
+        : "Date unavailable";
+
+      const download = hasId
+        ? `<a class="btn btn-primary rounded-pill px-3"
+               href="/api/resources/${rawId}/download"
+               target="_blank" rel="noopener noreferrer">
+             <i class="fas fa-download me-1"></i> Download PDF
+           </a>`
+        : `<span class="text-muted small">Download unavailable: resource ID missing.</span>`;
+
+      const bookmarkButton = hasId
+        ? `<button
+               type="button"
+               class="bookmark-btn ${isBookmarked ? "is-bookmarked" : ""}"
+               data-bookmark-id="${rawId}"
+               aria-pressed="${isBookmarked}"
+               aria-label="${isBookmarked ? "Remove bookmark" : "Save to My Library"}"
+               title="${isBookmarked ? "Remove from My Library" : "Save to My Library"}">
+             <i class="${isBookmarked ? "fas" : "far"} fa-bookmark" aria-hidden="true"></i>
+           </button>`
+        : "";
+
+      return `
+        <div class="col-md-6">
+          <article class="resource-card">
+            <div class="card-custom p-4">
+
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                <span style="color:var(--blue);font-size:1.35rem">
+                  <i class="fas fa-file-pdf"></i>
+                </span>
+
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge rounded-pill text-bg-light">
+                    ${escapeHTML(inferType(resource))}
+                  </span>
+                  ${bookmarkButton}
+                </div>
+              </div>
+
+              <h5 class="text-navy">${title}</h5>
+
+              <p class="resource-description text-muted" style="font-size:.9rem">
+                ${description}
+              </p>
+
+              <div class="small text-muted mb-3">
+                <div class="mb-1"><i class="fas fa-book me-2"></i>${subject}</div>
+                <div class="mb-1"><i class="fas fa-graduation-cap me-2"></i>${branch}</div>
+                <div class="mb-1"><i class="fas fa-user me-2"></i>${uploader}</div>
+                <div><i class="fas fa-calendar me-2"></i>${escapeHTML(date)}</div>
+              </div>
+
+              ${download}
+            </div>
+          </article>
+        </div>`;
+    }).join("");
+  }
+
+  function clearFilters() {
+    searchInput.value = "";
+    subjectFilter.value = "";
+    branchFilter.value = "";
+    typeFilter.value = "";
+    semesterFilter.value = "";
+    sortSelect.value = "newest";
+    renderResources();
+  }
+
+  async function loadResources() {
+    loadingFailed = false;
+
+    resourceGrid.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading resources...</span>
+        </div>
+        <p class="text-muted mt-2">Loading resources from the database...</p>
+      </div>`;
+
+    try {
+      const response = await fetch("/api/resources", {
+        headers: { "Accept": "application/json" }
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("The API did not return a resource list.");
+      }
+
+      resources = data;
+      populateFilters();
+
+      const params = new URLSearchParams(window.location.search);
+
+      const requestedSubject = params.get("subject");
+      const requestedBranch = params.get("branch");
+      const requestedType = params.get("type");
+      const requestedSemester = params.get("semester");
+
+      if (requestedSubject) {
+        const option = [...subjectFilter.options].find(o =>
+          o.value && subjectMatches(o.value, requestedSubject)
+        );
+        if (option) subjectFilter.value = option.value;
+      }
+
+      if (requestedBranch) {
+        const option = [...branchFilter.options].find(o =>
+          o.value && branchMatches(o.value, requestedBranch)
+        );
+        if (option) branchFilter.value = option.value;
+      }
+
+      if (requestedType &&
+          [...typeFilter.options].some(o => o.value === requestedType)) {
+        typeFilter.value = requestedType;
+      }
+
+      if (requestedSemester &&
+          [...semesterFilter.options].some(o => o.value === requestedSemester)) {
+        semesterFilter.value = requestedSemester;
+      }
+
+      renderResources();
+    } catch (error) {
+      console.error("Failed to load resources:", error);
+      loadingFailed = true;
+      resultsCount.textContent = "Resources unavailable";
+
+      resourceGrid.innerHTML = `
+        <div class="col-12">
+          <div class="resource-filter-message">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3 text-warning"></i>
+            <h5>Could not load resources</h5>
+            <p>Make sure Spring Boot is running and the resources API is available.</p>
+            <button type="button" class="btn btn-primary" id="retryResources">
+              Try Again
+            </button>
+          </div>
+        </div>`;
+
+      $("retryResources").addEventListener("click", loadResources);
+    }
+  }
+
+  // Handle bookmark clicks using event delegation.
+  resourceGrid.addEventListener("click", function (event) {
+    const button = event.target.closest("[data-bookmark-id]");
+
+    if (!button || !resourceGrid.contains(button)) return;
+
+    const resourceId = String(button.dataset.bookmarkId);
+    const bookmarks = getBookmarks();
+
+    if (bookmarks.has(resourceId)) {
+      bookmarks.delete(resourceId);
+    } else {
+      bookmarks.add(resourceId);
+    }
+
+    if (saveBookmarks(bookmarks)) {
+      renderResources();
+    }
+  });
+
+  searchInput.addEventListener("input", renderResources);
+  $("searchBtn").addEventListener("click", renderResources);
+  subjectFilter.addEventListener("change", renderResources);
+  branchFilter.addEventListener("change", renderResources);
+  typeFilter.addEventListener("change", renderResources);
+  semesterFilter.addEventListener("change", renderResources);
+  sortSelect.addEventListener("change", renderResources);
+  $("clearFilters").addEventListener("click", clearFilters);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadResources);
+  } else {
+    loadResources();
+  }
+})();
+</script>
+
+</body>
+</html>

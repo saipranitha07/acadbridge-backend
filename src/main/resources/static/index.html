@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AcadBridge — Inter-Batch Academic Knowledge Repository</title>
+  <meta name="description" content="AcadBridge helps college students from all batches and branches discover and share academic resources — notes, papers, lab manuals, assignments and more." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+   
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="previous-papers.html">Papers</a></li>
+        <li class="nav-item"><a class="nav-link" href="study-paths.html">Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html">My Library</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a href="admin.html" class="nav-link text-white">Admin</a>
+        <a href="moderator.html" class="nav-link text-white">Moderator</a>
+        <a href="login.html" class="nav-link text-white-50">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-6 hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-graduation-cap"></i>
+          INTER-BATCH KNOWLEDGE SHARING
+        </div>
+        <h1 class="hero-title">
+          Your Campus <span class="highlight">Academic Hub</span><br />for Every Subject
+        </h1>
+        <p class="hero-sub">
+          Discover notes, previous papers, lab manuals, assignments & more — shared by seniors across all branches and semesters.
+        </p>
+
+        <div class="hero-search-wrap">
+          <div class="hero-search-inner">
+            <i class="fas fa-search text-white-50"></i>
+            <input type="text" id="heroSearch" placeholder="Search notes, subjects, papers…" />
+            <button class="btn-search" onclick="heroSearch()">Search</button>
+          </div>
+        </div>
+
+        <div class="hero-tags">
+          <span class="hero-tag" onclick="tagSearch('Data Structures')">Data Structures</span>
+          <span class="hero-tag" onclick="tagSearch('DBMS')">DBMS</span>
+          <span class="hero-tag" onclick="tagSearch('Java')">Java</span>
+          <span class="hero-tag" onclick="tagSearch('Networks')">Networks</span>
+          <span class="hero-tag" onclick="tagSearch('Mathematics')">Mathematics</span>
+          <span class="hero-tag" onclick="tagSearch('Previous Papers')">Prev. Papers</span>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <span class="hero-stat-num" data-count="1240">1240</span>
+            <span class="hero-stat-label">Resources</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num" data-count="850">850</span>
+            <span class="hero-stat-label">Students</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num" data-count="48">48</span>
+            <span class="hero-stat-label">Subjects</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num" data-count="6">6</span>
+            <span class="hero-stat-label">Branches</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 hero-visual">
+        <div class="hero-float-card">
+          <div class="icon-circle" style="background:rgba(30,144,255,0.25)">
+            <i class="fas fa-file-alt" style="color:#7EC8FF"></i>
+          </div>
+          <div>
+            <h6>Data Structures Notes</h6>
+            <span>CSE · Sem 3 · 342 downloads</span>
+          </div>
+        </div>
+        <div class="hero-float-card">
+          <div class="icon-circle" style="background:rgba(245,166,35,0.25)">
+            <i class="fas fa-scroll" style="color:#F5A623"></i>
+          </div>
+          <div>
+            <h6>DBMS Previous Paper 2023-24</h6>
+            <span>CSE · Sem 4 · 521 downloads</span>
+          </div>
+        </div>
+        <div class="hero-float-card">
+          <div class="icon-circle" style="background:rgba(34,197,94,0.25)">
+            <i class="fas fa-flask" style="color:#4ADE80"></i>
+          </div>
+          <div>
+            <h6>Network Lab Manual</h6>
+            <span>CSE · Sem 7 · 187 downloads</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ SUBJECT CATEGORIES ════════════════════════════ -->
+<section class="section-py bg-white-custom">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <h2>Browse by Category</h2>
+      <div class="section-divider"></div>
+      <p>Find resources for your branch, semester, and favourite subjects.</p>
+    </div>
+    <div class="row g-3" data-reveal>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('CSE')">
+          <div class="cat-icon" style="background:#EFF6FF"><i class="fas fa-laptop-code" style="color:#1D4ED8"></i></div>
+          <h6>CSE</h6>
+          <span>312 resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('ECE')">
+          <div class="cat-icon" style="background:#FFF7ED"><i class="fas fa-microchip" style="color:#C2410C"></i></div>
+          <h6>ECE</h6>
+          <span>198 resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('Mechanical')">
+          <div class="cat-icon" style="background:#F0FDF4"><i class="fas fa-cog" style="color:#15803D"></i></div>
+          <h6>Mechanical</h6>
+          <span>145 resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('Civil')">
+          <div class="cat-icon" style="background:#FDF4FF"><i class="fas fa-hard-hat" style="color:#9333EA"></i></div>
+          <h6>Civil</h6>
+          <span>112 resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('EEE')">
+          <div class="cat-icon" style="background:#FFFBEB"><i class="fas fa-bolt" style="color:#B45309"></i></div>
+          <h6>EEE</h6>
+          <span>89 resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGo('Common')">
+          <div class="cat-icon" style="background:#F0F9FF"><i class="fas fa-book-open" style="color:#0369A1"></i></div>
+          <h6>Common</h6>
+          <span>74 resources</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource Types Row -->
+    <div class="row g-3 mt-3" data-reveal>
+      <div class="col-12"><h5 class="fw-700 text-navy mb-3">Browse by Type</h5></div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('notes')">
+          <div class="cat-icon" style="background:#EFF6FF"><i class="fas fa-file-alt" style="color:#1D4ED8"></i></div>
+          <h6>Class Notes</h6>
+          <span>380 files</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('paper')">
+          <div class="cat-icon" style="background:#FFF7ED"><i class="fas fa-scroll" style="color:#C2410C"></i></div>
+          <h6>Prev. Papers</h6>
+          <span>220 files</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('lab')">
+          <div class="cat-icon" style="background:#F0FDF4"><i class="fas fa-flask" style="color:#15803D"></i></div>
+          <h6>Lab Manuals</h6>
+          <span>140 files</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('assignment')">
+          <div class="cat-icon" style="background:#FDF4FF"><i class="fas fa-tasks" style="color:#9333EA"></i></div>
+          <h6>Assignments</h6>
+          <span>100 files</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('ppt')">
+          <div class="cat-icon" style="background:#FFFBEB"><i class="fas fa-file-powerpoint" style="color:#B45309"></i></div>
+          <h6>Presentations</h6>
+          <span>90 files</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="category-card" onclick="filterGoType('study')">
+          <div class="cat-icon" style="background:#F0F9FF"><i class="fas fa-book-open" style="color:#0369A1"></i></div>
+          <h6>Study Material</h6>
+          <span>70 files</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURED RESOURCES ═════════════════════════ -->
+<section class="section-py bg-light-custom">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <h2>Featured Resources</h2>
+      <div class="section-divider"></div>
+      <p>Top-rated and most downloaded materials across all branches.</p>
+    </div>
+    <div class="row g-4" id="featuredGrid" data-reveal></div>
+    <div class="text-center mt-4">
+      <a href="resources.html" class="btn-primary-custom">
+        <i class="fas fa-th-large"></i> Browse All Resources
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ════════════════════════════════ -->
+<section class="section-py bg-white-custom">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <h2>How AcadBridge Works</h2>
+      <div class="section-divider"></div>
+      <p>Three simple steps to share or discover academic resources.</p>
+    </div>
+    <div class="row" data-reveal>
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h5>Register & Join</h5>
+          <p>Create a free student account. Select your branch, semester, and subjects of interest.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h5>Discover & Download</h5>
+          <p>Search by subject, semester, or type. Browse notes from seniors verified by moderators.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h5>Contribute & Earn</h5>
+          <p>Upload your own notes and assignments. Help juniors and build your academic profile.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STATS STRIP ═════════════════════════════════ -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-counter">
+          <span class="num" data-count="1240">0</span>
+          <span class="label">Total Resources</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-counter">
+          <span class="num" data-count="850">0</span>
+          <span class="label">Registered Students</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-counter">
+          <span class="num" data-count="15800">0</span>
+          <span class="label">Total Downloads</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-counter">
+          <span class="num" data-count="48">0</span>
+          <span class="label">Subjects Covered</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LATEST CONTRIBUTIONS ════════════════════════ -->
+<section class="section-py bg-light-custom">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <h2>Recent Contributions</h2>
+      <div class="section-divider"></div>
+      <p>Freshly uploaded resources from your fellow students.</p>
+    </div>
+    <div class="row g-4" id="recentGrid" data-reveal></div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA SECTION ══════════════════════════════════ -->
+<section class="section-py-sm" style="background:linear-gradient(135deg,var(--navy) 0%,#0a2540 100%)">
+  <div class="container text-center py-3">
+    <h2 style="color:#fff;font-size:1.9rem;margin-bottom:0.6rem">Ready to share your knowledge?</h2>
+    <p style="color:rgba(255,255,255,0.7);margin-bottom:1.8rem;font-size:1rem">Join AcadBridge and help hundreds of juniors with your notes.</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="register.html" class="btn-primary-custom"><i class="fas fa-user-plus"></i> Create Free Account</a>
+      <a href="upload.html" class="btn-secondary-custom" style="color:#fff;border-color:#fff"><i class="fas fa-upload"></i> Upload Resources</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand mb-2">Acad<span>Bridge</span></div>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.6);max-width:280px">
+          A student-driven academic knowledge repository for sharing and discovering course materials across batches.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" style="color:rgba(255,255,255,0.5);font-size:1.1rem" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="resources.html">Browse All</a></li>
+          <li><a href="previous-papers.html">Question Papers</a></li>
+          <li><a href="study-paths.html">Study Paths</a></li>
+          <li><a href="upload.html">Upload Material</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-library.html">My Library</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Branches</h5>
+        <ul>
+          <li><a href="resources.html">CSE</a></li>
+          <li><a href="resources.html">ECE</a></li>
+          <li><a href="resources.html">Mechanical</a></li>
+          <li><a href="resources.html">Civil</a></li>
+          <li><a href="resources.html">EEE</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Admin</h5>
+        <ul>
+          <li><a href="moderator.html">Moderator</a></li>
+          <li><a href="admin.html">Admin Panel</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">
+    
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Populate featured + recent grids
+  document.addEventListener('DOMContentLoaded', () => {
+    const top = [...SAMPLE_RESOURCES].sort((a,b) => b.rating - a.rating).slice(0,6);
+    document.getElementById('featuredGrid').innerHTML = top.map(r => buildResourceCard(r)).join('');
+
+    const recent = [...SAMPLE_RESOURCES].sort((a,b) => b.downloads - a.downloads).slice(6,12);
+    document.getElementById('recentGrid').innerHTML = recent.map(r => buildResourceCard(r)).join('');
+
+    // Hero counter animation
+    let heroCounters = document.querySelectorAll('.hero-stat-num[data-count]');
+    heroCounters.forEach(el => {
+      const target = parseInt(el.dataset.count, 10);
+      let cur = 0;
+      const step = target / 60;
+      const t = setInterval(() => {
+        cur = Math.min(cur + step, target);
+        el.textContent = Math.round(cur).toLocaleString();
+        if (cur >= target) clearInterval(t);
+      }, 18);
+    });
+  });
+
+  function heroSearch() {
+    const q = document.getElementById('heroSearch').value.trim();
+    if (q) window.location.href = `resources.html?q=${encodeURIComponent(q)}`;
+  }
+  function tagSearch(tag) {
+    window.location.href = `resources.html?q=${encodeURIComponent(tag)}`;
+  }
+  function filterGo(branch) {
+    window.location.href = `resources.html?branch=${encodeURIComponent(branch)}`;
+  }
+  function filterGoType(type) {
+    window.location.href = `resources.html?type=${encodeURIComponent(type)}`;
+  }
+  document.getElementById('heroSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') heroSearch();
+  });
+</script>
+</body>
+</html>

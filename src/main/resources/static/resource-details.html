@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resource Details — AcadBridge</title>
+  <meta name="description" content="View full details of this academic resource on AcadBridge." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+<div class="demo-banner">
+  <i class="fas fa-flask"></i>
+  PROTOTYPE DEMO — No real files. Download button shows a demo message only.
+</div>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="resources.html"><i class="fas fa-folder-open"></i>Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="previous-papers.html"><i class="fas fa-scroll"></i>Papers</a></li>
+        <li class="nav-item"><a class="nav-link" href="study-paths.html"><i class="fas fa-route"></i>Study Paths</a></li>
+        <li class="nav-item"><a class="nav-link" href="upload.html"><i class="fas fa-upload"></i>Upload</a></li>
+        <li class="nav-item"><a class="nav-link" href="my-library.html"><i class="fas fa-bookmark"></i>My Library</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <a href="login.html" class="nav-link text-white-50" style="font-size:0.9rem;font-weight:500">Login</a>
+        <a href="register.html" class="btn-nav-cta">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Resource Hero -->
+<div class="detail-hero" id="detailHero">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="resources.html">Resources</a></li>
+        <li class="breadcrumb-item active" id="breadTitle">…</li>
+      </ol>
+    </nav>
+    <div class="row align-items-center gy-3">
+      <div class="col-md-8">
+        <div id="detailBadge"></div>
+        <h1 id="detailTitle">Loading…</h1>
+        <div class="d-flex flex-wrap gap-3 mt-2" id="detailMeta"></div>
+        <div class="d-flex align-items-center gap-2 mt-2" id="detailRating"></div>
+      </div>
+      <div class="col-md-4 text-md-end d-flex gap-2 justify-content-md-end flex-wrap">
+        <button class="btn-primary-custom" id="downloadBtn" onclick="demoDownload()">
+          <i class="fas fa-download"></i> Download (Demo)
+        </button>
+        <button class="btn-secondary-custom" id="bookmarkBtn" onclick="togglePageBookmark()" style="color:#fff;border-color:rgba(255,255,255,0.5)">
+          <i class="far fa-bookmark"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-4">
+  <div class="row g-4">
+    <!-- Main content -->
+    <div class="col-lg-8">
+
+      <!-- Description -->
+      <div class="card-custom p-4 mb-4">
+        <h5 class="text-navy mb-2"><i class="fas fa-info-circle me-2 text-blue"></i>About This Resource</h5>
+        <p id="detailDesc" style="color:var(--text-mid);line-height:1.7"></p>
+        <div class="d-flex flex-wrap gap-2 mt-3" id="detailTags"></div>
+      </div>
+
+      <!-- Preview placeholder -->
+      <div class="card-custom p-4 mb-4" style="text-align:center">
+        <i class="fas fa-eye" style="font-size:2.5rem;color:var(--mid-grey);margin-bottom:1rem;display:block"></i>
+        <h6 class="text-navy">Document Preview</h6>
+        <p style="color:var(--text-light);font-size:0.88rem">Preview is not available in this prototype. Click "Download (Demo)" to simulate access.</p>
+        <div class="p-3 rounded-3 mt-3" style="background:var(--light-grey);border:2px dashed var(--mid-grey)">
+          <p style="color:var(--text-light);font-size:0.82rem;margin:0">
+            <i class="fas fa-shield-alt me-1"></i>
+            In the full application, a PDF or image preview would be shown here after verifying your student account.
+          </p>
+        </div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="card-custom p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="text-navy m-0"><i class="fas fa-star me-2 text-blue"></i>Ratings &amp; Reviews</h5>
+          <button class="btn-secondary-custom" style="padding:6px 16px;font-size:0.84rem" onclick="showToast('Rate &amp; review is available after login (demo).','info')">
+            <i class="fas fa-pen"></i> Write Review
+          </button>
+        </div>
+        <div id="reviewsContainer"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- File Info -->
+      <div class="card-custom p-4 mb-4">
+        <h6 class="text-navy mb-3"><i class="fas fa-file me-2 text-blue"></i>File Information</h6>
+        <table class="w-100" style="font-size:0.88rem">
+          <tr><td style="color:var(--text-light);padding:5px 0;width:50%">File Size</td><td id="infoSize" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Pages</td><td id="infoPages" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Subject</td><td id="infoSubject" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Branch</td><td id="infoBranch" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Semester</td><td id="infoSemester" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Unit</td><td id="infoUnit" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Year</td><td id="infoYear" style="font-weight:600;color:var(--navy)">—</td></tr>
+          <tr><td style="color:var(--text-light);padding:5px 0">Downloads</td><td id="infoDownloads" style="font-weight:600;color:var(--navy)">—</td></tr>
+        </table>
+      </div>
+
+      <!-- Contributor -->
+      <div class="card-custom p-4 mb-4">
+        <h6 class="text-navy mb-3"><i class="fas fa-user me-2 text-blue"></i>Contributor</h6>
+        <div class="d-flex align-items-center gap-3" id="contributorInfo"></div>
+      </div>
+
+      <!-- Related Resources -->
+      <div class="card-custom p-4">
+        <h6 class="text-navy mb-3"><i class="fas fa-th-list me-2 text-blue"></i>Related Resources</h6>
+        <div id="relatedList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="footer-brand mb-2">Acad<span>Bridge</span></div>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.6)">Student-driven academic knowledge sharing. Sample data only.</p>
+      </div>
+      <div class="col-md-3">
+        <h5>Pages</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="study-paths.html">Study Paths</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="my-library.html">My Library</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <div class="footer-bottom">&copy; 2026 AcadBridge · College Project Prototype</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+
+'use strict';
+
+let currentResource = null;
+let allResources = [];
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.textContent =
+      value === null || value === undefined || value === ''
+        ? 'Not provided'
+        : String(value);
+  }
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
+}
+
+async function loadResourceDetails() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+
+  if (!id || !/^\d+$/.test(id)) {
+    showDetailsError(
+      'Invalid resource ID. Open this page from the Resources list.'
+    );
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/resources');
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    allResources = await response.json();
+
+    currentResource = allResources.find(
+      resource => String(resource.resourceId) === id
+    );
+
+    if (!currentResource) {
+      showDetailsError('This resource was not found in the database.');
+      return;
+    }
+
+    renderResourceDetails(currentResource);
+  } catch (error) {
+    console.error('Could not load resource details:', error);
+    showDetailsError(
+      'Could not load resource details. Check that the backend is running.'
+    );
+  }
+}
+
+function showDetailsError(message) {
+  setText('detailTitle', message);
+  setText('breadTitle', 'Resource unavailable');
+  setText('detailDesc', message);
+
+  const reviews = document.getElementById('reviewsContainer');
+  if (reviews) reviews.innerHTML = '';
+}
+
+function renderResourceDetails(resource) {
+  const title = resource.title || 'Untitled Resource';
+  const subject = resource.subject || 'Not provided';
+  const branch = resource.branch || 'Not provided';
+  const contributor = resource.uploadedBy || 'Unknown';
+  const description =
+    resource.description || 'No description provided.';
+
+  const date = resource.createdAt
+    ? new Date(resource.createdAt).toLocaleDateString()
+    : 'Not provided';
+
+  document.title = `${title} — AcadBridge`;
+
+  setText('breadTitle', title);
+  setText('detailTitle', title);
+  setText('detailDesc', description);
+
+  const meta = document.getElementById('detailMeta');
+
+  if (meta) {
+    meta.innerHTML = `
+      <span class="text-white-50">
+        <i class="fas fa-code-branch me-1"></i>
+        ${escapeHTML(branch)}
+      </span>
+      <span class="text-white-50">
+        <i class="fas fa-book me-1"></i>
+        ${escapeHTML(subject)}
+      </span>
+      <span class="text-white-50">
+        <i class="fas fa-calendar me-1"></i>
+        ${escapeHTML(date)}
+      </span>`;
+  }
+
+  const badge = document.getElementById('detailBadge');
+
+  if (badge) {
+    badge.innerHTML =
+      '<span class="badge-type mb-2">Academic Resource</span>';
+  }
+
+  setText('detailRating', 'Ratings not available yet');
+
+  const tags = document.getElementById('detailTags');
+
+  if (tags) {
+    tags.innerHTML = [subject, branch]
+      .filter(value => value && value !== 'Not provided')
+      .map(value =>
+        `<span style="background:var(--light-grey);color:var(--navy);border-radius:50px;padding:4px 12px;font-size:0.8rem;font-weight:600">#${escapeHTML(value)}</span>`
+      )
+      .join('');
+  }
+
+  setText('infoSize', 'Not recorded');
+  setText('infoPages', 'Not recorded');
+  setText('infoSubject', subject);
+  setText('infoBranch', branch);
+  setText('infoSemester', 'Not recorded');
+  setText('infoUnit', 'Not recorded');
+  setText('infoYear', date);
+  setText('infoDownloads', 'Not tracked');
+
+  const contributorElement =
+    document.getElementById('contributorInfo');
+
+  if (contributorElement) {
+    const initials = contributor
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(name => name[0])
+      .join('')
+      .slice(0, 3);
+
+    contributorElement.innerHTML = `
+      <div class="avatar-sm"
+        style="background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;width:48px;height:48px;font-size:1rem;display:flex;align-items:center;justify-content:center;border-radius:50%">
+        ${escapeHTML(initials)}
+      </div>
+      <div>
+        <div style="font-weight:700;color:var(--navy)">
+          ${escapeHTML(contributor)}
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-light)">
+          ${escapeHTML(branch)}
+        </div>
+      </div>`;
+  }
+
+  const reviews = document.getElementById('reviewsContainer');
+
+  if (reviews) {
+    reviews.innerHTML =
+      '<p class="text-muted">No reviews have been added yet.</p>';
+  }
+
+  const related = allResources.filter(item =>
+    String(item.resourceId) !== String(resource.resourceId) &&
+    (
+      (item.subject && item.subject === resource.subject) ||
+      (item.branch && item.branch === resource.branch)
+    )
+  ).slice(0, 4);
+
+  const relatedElement = document.getElementById('relatedList');
+
+  if (relatedElement) {
+    relatedElement.innerHTML = related.length
+      ? related.map(item => `
+          <a href="resource-details.html?id=${encodeURIComponent(item.resourceId)}"
+             class="d-flex align-items-start gap-2 mb-3 text-decoration-none">
+            <div style="width:36px;height:36px;border-radius:8px;background:var(--light-grey);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="fas fa-file" style="color:var(--blue)"></i>
+            </div>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600;color:var(--navy)">
+                ${escapeHTML(item.title)}
+              </div>
+              <div style="font-size:0.76rem;color:var(--text-light)">
+                ${escapeHTML(item.subject || 'Not provided')}
+              </div>
+            </div>
+          </a>`).join('')
+      : '<p class="text-muted small">No related resources yet.</p>';
+  }
+
+  const bookmarkButton = document.getElementById('bookmarkBtn');
+
+  if (bookmarkButton && typeof isBookmarked === 'function') {
+    updateBookmarkBtn(
+      isBookmarked(String(resource.resourceId))
+    );
+  }
+}
+
+function updateBookmarkBtn(saved) {
+  const button = document.getElementById('bookmarkBtn');
+
+  if (!button) return;
+
+  button.innerHTML = saved
+    ? '<i class="fas fa-bookmark"></i> Saved'
+    : '<i class="far fa-bookmark"></i> Save';
+}
+
+function togglePageBookmark() {
+  if (!currentResource || typeof toggleBookmark !== 'function') {
+    return;
+  }
+
+  const saved = toggleBookmark(
+    String(currentResource.resourceId)
+  );
+
+  updateBookmarkBtn(saved);
+}
+
+
+function demoDownload() {
+  if (!currentResource) {
+    alert('Please open a resource first.');
+    return;
+  }
+
+  window.location.href =
+    `/api/resources/${currentResource.resourceId}/download`;
+}
+
+
+document.addEventListener('DOMContentLoaded', loadResourceDetails);
+
+</script>
+</body>
+</html>

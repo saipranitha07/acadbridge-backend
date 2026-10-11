@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moderator Dashboard — AcadBridge</title>
+  <meta name="description" content="AcadBridge moderator dashboard for reviewing uploaded academic resources.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    /* ===== FIX TOP NAVIGATION AND PAGE POSITION ===== */
+    html {
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100%;
+      height: auto !important;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-padding-top: 0;
+    }
+
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100vh;
+      height: auto !important;
+      position: static !important;
+      top: auto !important;
+      transform: none !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+    }
+
+    body > nav.navbar {
+      position: relative !important;
+      inset: auto !important;
+      display: flex;
+      width: 100%;
+      min-height: 64px;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 8px 0 !important;
+      transform: none !important;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    body > nav.navbar .container-fluid {
+      min-height: 48px;
+      align-items: center;
+    }
+
+    .dashboard-layout {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      min-height: calc(100vh - 64px);
+      height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .dashboard-sidebar {
+      flex-shrink: 0;
+      height: auto !important;
+      min-height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+
+    .dashboard-main {
+      min-width: 0;
+      flex: 1;
+      height: auto !important;
+      margin: 0 !important;
+      padding: 20px 24px 48px !important;
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
+
+    /* ===== RESOURCE CARDS ===== */
+    .mod-status {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 30px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: .78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .mod-description {
+      color: var(--text-mid);
+      font-size: .88rem;
+      overflow-wrap: anywhere;
+    }
+
+    .mod-message {
+      padding: 18px;
+      margin-bottom: 15px;
+      background: white;
+      border-radius: 12px;
+      color: var(--text-mid);
+      overflow-wrap: anywhere;
+    }
+
+    .mod-download {
+      display: inline-block;
+      background: var(--blue);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      padding: 8px 16px;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    .mod-download:hover {
+      color: white;
+      opacity: .9;
+    }
+
+    .mod-refresh {
+      border: none;
+      border-radius: 50px;
+      padding: 8px 16px;
+      background: var(--blue);
+      color: white;
+      font-weight: 600;
+      font-size: .85rem;
+    }
+
+    .mod-refresh:hover {
+      opacity: .9;
+    }
+
+    .mod-card {
+      overflow-wrap: anywhere;
+    }
+
+    /* ===== MOBILE LAYOUT ===== */
+    @media (max-width: 767px) {
+      body > nav.navbar {
+        min-height: 60px;
+        padding: 8px 0 !important;
+      }
+
+      body > nav.navbar .container-fluid {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      body > nav.navbar .d-flex {
+        gap: 10px !important;
+        flex-wrap: wrap;
+      }
+
+      .dashboard-layout {
+        flex-direction: column;
+        min-height: calc(100vh - 60px);
+      }
+
+      .dashboard-sidebar {
+        width: 100%;
+        max-width: 100%;
+        min-height: 0;
+        height: auto !important;
+      }
+
+      .dashboard-main {
+        width: 100%;
+        padding: 18px 16px 36px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top navigation -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="index.html">Acad<span>Bridge</span></a>
+
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <span style="color:rgba(255,255,255,.75);font-size:.85rem">
+          <i class="fas fa-user-shield me-1"></i> Moderator
+        </span>
+        <a href="index.html" class="btn-nav-cta">← Back to Site</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="dash-logo">
+        <div style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1rem;color:#fff">
+          <i class="fas fa-user-shield me-2" style="color:var(--blue-light)"></i>
+          Moderator
+        </div>
+      </div>
+
+      <nav>
+        <a href="#" class="dash-nav-link active"
+           onclick="showModSection('pending',this);return false;">
+          <i class="fas fa-file-pdf"></i> Uploaded Resources
+          <span id="pendingBadge"
+                style="margin-left:auto;background:var(--blue);color:#fff;border-radius:50px;padding:2px 8px;font-size:.72rem;font-weight:700">0</span>
+        </a>
+
+        <a href="#" class="dash-nav-link"
+           onclick="showModSection('approved',this);return false;">
+          <i class="fas fa-check-circle"></i> Approval History
+        </a>
+
+        <a href="#" class="dash-nav-link"
+           onclick="showModSection('rejected',this);return false;">
+          <i class="fas fa-times-circle"></i> Rejection History
+        </a>
+
+        <a href="#" class="dash-nav-link"
+           onclick="showModSection('reported',this);return false;">
+          <i class="fas fa-flag"></i> Reported Content
+        </a>
+
+        <a href="#" class="dash-nav-link"
+           onclick="showModSection('guidelines',this);return false;">
+          <i class="fas fa-book"></i> Guidelines
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main dashboard -->
+    <main class="dashboard-main">
+      <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+          <h4 class="text-navy fw-800 m-0">Moderation Dashboard</h4>
+          <p class="text-muted mb-0" style="font-size:.87rem">
+            Review resources uploaded by AcadBridge students
+          </p>
+        </div>
+
+        <button class="mod-refresh" onclick="loadResources()">
+          <i class="fas fa-sync-alt me-1"></i> Refresh Resources
+        </button>
+      </div>
+
+      <!-- Statistics -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#EFF6FF">
+              <i class="fas fa-file-pdf" style="color:var(--blue)"></i>
+            </div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="totalResources">—</div>
+              <div class="kpi-label">Uploaded Resources</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#F0FDF4">
+              <i class="fas fa-database" style="color:var(--success)"></i>
+            </div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="connectionStatus">Checking</div>
+              <div class="kpi-label">Database API</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 col-md-4">
+          <div class="kpi-card">
+            <div class="kpi-icon" style="background:#FFFBEB">
+              <i class="fas fa-clipboard-check" style="color:var(--warning)"></i>
+            </div>
+            <div class="kpi-info">
+              <div class="kpi-num">—</div>
+              <div class="kpi-label">Moderation Decisions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Uploaded resources -->
+      <section id="section-pending">
+        <h5 class="text-navy fw-700 mb-3">
+          <i class="fas fa-file-pdf me-2 text-blue"></i>
+          Uploaded Resources
+        </h5>
+
+        <p class="text-muted mb-3" style="font-size:.88rem">
+          These resources are retrieved from the AcadBridge backend.
+          They are not automatically marked as approved or pending.
+        </p>
+
+        <div id="pendingList" aria-live="polite">
+          <div class="mod-message">
+            <i class="fas fa-spinner fa-spin me-2"></i>
+            Loading resources from the database...
+          </div>
+        </div>
+      </section>
+
+      <!-- Approval history -->
+      <section id="section-approved" class="d-none">
+        <h5 class="text-navy fw-700 mb-3">
+          <i class="fas fa-check-circle me-2" style="color:var(--success)"></i>
+          Approval History
+        </h5>
+        <div class="mod-message">
+          Approval history is not connected to the backend yet.
+        </div>
+      </section>
+
+      <!-- Rejection history -->
+      <section id="section-rejected" class="d-none">
+        <h5 class="text-navy fw-700 mb-3">
+          <i class="fas fa-times-circle me-2" style="color:var(--danger)"></i>
+          Rejection History
+        </h5>
+        <div class="mod-message">
+          Rejection history is not connected to the backend yet.
+        </div>
+      </section>
+
+      <!-- Reported content -->
+      <section id="section-reported" class="d-none">
+        <h5 class="text-navy fw-700 mb-3">
+          <i class="fas fa-flag me-2 text-blue"></i>
+          Reported Content
+        </h5>
+        <div class="mod-message">
+          Reported-content tracking is not connected to the backend yet.
+        </div>
+      </section>
+
+      <!-- Guidelines -->
+      <section id="section-guidelines" class="d-none">
+        <h5 class="text-navy fw-700 mb-3">
+          <i class="fas fa-book me-2 text-blue"></i>
+          Moderation Guidelines
+        </h5>
+
+        <div class="card-custom p-4">
+          <h6 class="text-navy">Review a resource for:</h6>
+          <ul style="font-size:.9rem;color:var(--text-mid)">
+            <li>Academic relevance and usefulness to students.</li>
+            <li>Readable, complete and correctly formatted content.</li>
+            <li>Correct subject and branch information.</li>
+            <li>Potential plagiarism or copyright concerns.</li>
+            <li>Incorrect, misleading or outdated information.</li>
+          </ul>
+
+          <h6 class="text-navy mt-3">Before making a moderation decision:</h6>
+          <ul style="font-size:.9rem;color:var(--text-mid)">
+            <li>Open and inspect the uploaded PDF.</li>
+            <li>Check that its content matches its title and subject.</li>
+            <li>Do not approve material that you have not reviewed.</li>
+            <li>Use backend moderation records once that feature is implemented.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function showModSection(sectionName, clickedLink) {
+      const sections = [
+        "pending",
+        "approved",
+        "rejected",
+        "reported",
+        "guidelines"
+      ];
+
+      sections.forEach(name => {
+        document.getElementById("section-" + name).classList.add("d-none");
+      });
+
+      document.querySelectorAll(".dash-nav-link").forEach(link => {
+        link.classList.remove("active");
+      });
+
+      document.getElementById("section-" + sectionName).classList.remove("d-none");
+      clickedLink.classList.add("active");
+    }
+
+    function showResourceMessage(message, isError = false) {
+      const container = document.getElementById("pendingList");
+      container.innerHTML = `
+        <div class="mod-message">
+          <i class="fas ${isError ? "fa-exclamation-circle" : "fa-info-circle"} me-2"></i>
+          ${escapeHTML(message)}
+        </div>`;
+    }
+
+    function renderResources(resources) {
+      const container = document.getElementById("pendingList");
+
+      if (!resources.length) {
+        showResourceMessage("No uploaded resources were found in the database.");
+        return;
+      }
+
+      container.innerHTML = resources.map(resource => {
+        const id = Number(resource.resourceId);
+
+        if (!Number.isSafeInteger(id) || id < 1) {
+          return "";
+        }
+
+        const title = escapeHTML(resource.title || "Untitled resource");
+        const description = escapeHTML(resource.description || "No description provided.");
+        const subject = escapeHTML(resource.subject || "Subject not specified");
+        const branch = escapeHTML(resource.branch || "Branch not specified");
+        const contributor = escapeHTML(resource.uploadedBy || "Unknown uploader");
+
+        let uploadedDate = "Date unavailable";
+
+        if (resource.createdAt && !Number.isNaN(Date.parse(resource.createdAt))) {
+          uploadedDate = escapeHTML(new Date(resource.createdAt).toLocaleString());
+        }
+
+        return `
+          <article class="mod-card">
+            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+              <div style="min-width:0;flex:1">
+                <div class="mod-title">${title}</div>
+                <div class="mod-meta">
+                  <i class="fas fa-user me-1"></i>${contributor}
+                  &nbsp;·&nbsp; ${branch}
+                  &nbsp;·&nbsp; ${subject}
+                </div>
+                <p class="mod-description mt-2 mb-2">${description}</p>
+                <div class="mod-meta">
+                  <i class="fas fa-calendar me-1"></i>Uploaded: ${uploadedDate}
+                </div>
+              </div>
+              <span class="mod-status">Uploaded</span>
+            </div>
+
+            <div class="mod-actions mt-3">
+              <a class="mod-download"
+                 href="/api/resources/${id}/download"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <i class="fas fa-download me-1"></i> Download / Review PDF
+              </a>
+            </div>
+          </article>`;
+      }).join("");
+
+      if (!container.innerHTML.trim()) {
+        showResourceMessage("No valid resource records were returned.");
+      }
+    }
+
+    async function loadResources() {
+      const status = document.getElementById("connectionStatus");
+      const total = document.getElementById("totalResources");
+
+      status.textContent = "Checking";
+      showResourceMessage("Loading resources from the AcadBridge backend...");
+
+      try {
+        const response = await fetch("/api/resources", {
+          headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) {
+          throw new Error("The backend returned HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("The resource API did not return a list.");
+        }
+
+        total.textContent = data.length;
+        document.getElementById("pendingBadge").textContent = data.length;
+        status.textContent = "Connected";
+
+        renderResources(data);
+      } catch (error) {
+        console.error("Failed to load AcadBridge resources:", error);
+
+        total.textContent = "—";
+        status.textContent = "Unavailable";
+
+        showResourceMessage(
+          "Could not load resources. Make sure Spring Boot is running, then click Refresh Resources.",
+          true
+        );
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadResources);
+  </script>
+</body>
+</html>

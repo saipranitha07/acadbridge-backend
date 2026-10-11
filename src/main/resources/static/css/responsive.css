@@ -1,0 +1,140 @@
+/* ============================================================
+   AcadBridge — Responsive Stylesheet
+   Breakpoints: 1200px | 992px | 768px | 576px
+   ============================================================ */
+
+/* ── Large Desktop ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .hero-title { font-size: 2.6rem; }
+  .dashboard-sidebar { width: 210px; }
+}
+
+/* ── Medium (Tablets / Small Laptops) ──────────────────────── */
+@media (max-width: 992px) {
+  .hero-section { padding: 60px 0 55px; }
+  .hero-title { font-size: 2.1rem; }
+  .hero-stats { gap: 1.4rem; }
+  .hero-visual { margin-top: 2.5rem; }
+
+  .dashboard-sidebar { width: 100%; min-height: auto; }
+  .dashboard-layout { flex-direction: column; }
+  .dashboard-main { padding: 1.2rem 1rem; }
+
+  .filter-sidebar { position: static; margin-bottom: 1.5rem; }
+
+  .stats-strip .stat-counter { margin-bottom: 1.5rem; }
+
+  .section-py { padding: 3.5rem 0; }
+  .section-title h2 { font-size: 1.75rem; }
+}
+
+/* ── Tablet Portrait / Large Mobile ────────────────────────── */
+@media (max-width: 768px) {
+  .demo-banner { font-size: 0.75rem; padding: 6px 12px; }
+
+  .navbar { top: 32px; }
+
+  .hero-section { padding: 50px 0 45px; }
+  .hero-title { font-size: 1.85rem; }
+  .hero-sub { font-size: 0.97rem; }
+  .hero-stats { gap: 1rem; }
+  .hero-stat-num { font-size: 1.5rem; }
+
+  .hero-search-inner { flex-direction: column; gap: 8px; }
+  .hero-search-inner input { width: 100%; }
+  .hero-search-inner .btn-search { width: 100%; justify-content: center; }
+
+  .hero-visual { display: none; } /* hide floating cards on mobile */
+
+  .form-card { padding: 2rem 1.4rem; }
+
+  .resource-card .rc-meta { gap: 8px; }
+
+  .path-card { margin-bottom: 1.2rem; }
+
+  .paper-card { flex-direction: column; align-items: flex-start; }
+  .paper-card .paper-actions { width: 100%; }
+
+  .sort-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .results-count { margin-left: 0; }
+
+  .stat-counter .num { font-size: 2rem; }
+
+  .kpi-card { padding: 1rem 1.1rem; }
+  .kpi-info .kpi-num { font-size: 1.5rem; }
+
+  .detail-hero h1 { font-size: 1.4rem; }
+
+  footer { text-align: center; }
+  footer ul { text-align: center; }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+  .demo-banner { font-size: 0.7rem; }
+  .navbar { top: 30px; }
+
+  .hero-section { padding: 40px 0 38px; }
+  .hero-title { font-size: 1.55rem; }
+  .hero-badge { font-size: 0.75rem; }
+  .hero-sub { font-size: 0.9rem; }
+
+  .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+  .hero-stat-item { flex: 1; min-width: 80px; }
+
+  .btn-primary-custom,
+  .btn-secondary-custom { width: 100%; justify-content: center; }
+
+  .section-title h2 { font-size: 1.55rem; }
+  .section-py { padding: 2.8rem 0; }
+
+  .form-page-wrap { padding: 2rem 0.8rem; }
+  .form-card { padding: 1.8rem 1.2rem; max-width: 100%; border-radius: var(--radius-md); }
+
+  .category-card { padding: 1.2rem 0.8rem; }
+  .category-card .cat-icon { width: 48px; height: 48px; font-size: 1.2rem; }
+
+  .step-card { padding: 1.5rem 1rem; }
+
+  .stats-strip { padding: 2.5rem 0; }
+  .stat-counter .num { font-size: 1.8rem; }
+
+  .mod-actions { flex-direction: column; }
+  .btn-approve, .btn-reject, .btn-flag { text-align: center; }
+
+  .library-tabs .nav-link { padding: 0.6rem 0.8rem; font-size: 0.82rem; }
+
+  .kpi-card { flex-direction: column; text-align: center; }
+  .kpi-icon { margin: 0 auto; }
+
+  .path-header { flex-direction: column; text-align: center; }
+  .path-step { flex-direction: column; }
+
+  .review-card { padding: 0.9rem 1rem; }
+
+  .chart-card { padding: 1rem; }
+
+  .toast-custom { right: 0.8rem; left: 0.8rem; max-width: none; }
+
+  .navbar-brand { font-size: 1.2rem; }
+  .btn-nav-cta { display: none; }
+
+  .search-bar-inner { flex-direction: column; }
+  .search-bar-inner input,
+  .search-bar-inner .btn-search-main { width: 100%; }
+}
+
+/* ── Print (no nav/footer) ─────────────────────────────────── */
+@media print {
+  .demo-banner, .navbar, footer, .filter-sidebar { display: none !important; }
+  body { background: #fff; }
+}
+
+/* ── Reduced Motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

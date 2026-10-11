@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — AcadBridge</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .admin-stat {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.06);
+      height: 100%;
+    }
+    .admin-stat .number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--navy, #123);
+    }
+    .admin-stat .label {
+      color: #667085;
+      font-size: .9rem;
+    }
+    .admin-section { margin-bottom: 24px; }
+    .admin-table-wrap {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.05);
+    }
+    .admin-table-wrap h5 { margin-bottom: 18px; }
+    .admin-nav-button {
+      display: block;
+      width: 100%;
+      padding: 12px 18px;
+      border: 0;
+      background: transparent;
+      color: white;
+      text-align: left;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .admin-nav-button:hover,
+    .admin-nav-button.active {
+      background: rgba(255,255,255,.13);
+    }
+    .admin-nav-button i {
+      width: 25px;
+    }
+    .status-note {
+      font-size: .85rem;
+      color: #667085;
+      margin-bottom: 14px;
+    }
+    .table td, .table th { vertical-align: middle; }
+    .admin-content-section { display: none; }
+    .admin-content-section.active { display: block; }
+  </style>
+</head>
+
+<body>
+
+<div class="demo-banner">
+  <i class="fas fa-database"></i>
+  AcadBridge Admin Dashboard — Connected data is loaded from your backend.
+  Analytics and reports may contain sample data.
+</div>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="index.html">
+      Acad<span>Bridge</span>
+    </a>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+      <a href="moderator.html" class="btn-nav-cta">Moderator</a>
+      <a href="index.html" class="btn-nav-cta">Back to Site</a>
+    </div>
+  </div>
+</nav>
+
+<div class="d-flex dashboard-layout" style="min-height:calc(100vh - 80px)">
+
+  <aside class="dashboard-sidebar">
+    <div class="dash-logo">
+      <div style="font-weight:800;font-size:1.1rem;color:white">
+        <i class="fas fa-tachometer-alt me-2"></i>Admin Panel
+      </div>
+    </div>
+
+    <nav class="p-2">
+      <button class="admin-nav-button active" onclick="showSection('overview',this)">
+        <i class="fas fa-home"></i> Overview
+      </button>
+      <button class="admin-nav-button" onclick="showSection('users',this)">
+        <i class="fas fa-users"></i> Users
+      </button>
+      <button class="admin-nav-button" onclick="showSection('resources',this)">
+        <i class="fas fa-folder"></i> Resources
+      </button>
+      <button class="admin-nav-button" onclick="showSection('analytics',this)">
+        <i class="fas fa-chart-bar"></i> Analytics
+      </button>
+      <button class="admin-nav-button" onclick="showSection('reports',this)">
+        <i class="fas fa-flag"></i> Reports
+      </button>
+      <button class="admin-nav-button" onclick="showSection('settings',this)">
+        <i class="fas fa-cog"></i> Settings
+      </button>
+    </nav>
+  </aside>
+
+  <main class="dashboard-main" style="width:100%;min-width:0">
+
+    <div class="mb-4">
+      <h3 class="text-navy fw-bold">Admin Dashboard</h3>
+      <p class="text-muted mb-0">
+        Manage AcadBridge resources and view database information.
+      </p>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section id="section-overview" class="admin-content-section active">
+      <div class="row g-3 admin-section">
+
+        <div class="col-6 col-xl-3">
+          <div class="admin-stat">
+            <i class="fas fa-users fa-lg mb-3 text-primary"></i>
+            <div class="number" id="totalUsers">—</div>
+            <div class="label">Registered Users</div>
+          </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+          <div class="admin-stat">
+            <i class="fas fa-folder-open fa-lg mb-3 text-success"></i>
+            <div class="number" id="totalResources">—</div>
+            <div class="label">Uploaded Resources</div>
+          </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+          <div class="admin-stat">
+            <i class="fas fa-book fa-lg mb-3 text-warning"></i>
+            <div class="number" id="totalSubjects">—</div>
+            <div class="label">Subjects Represented</div>
+          </div>
+        </div>
+
+        <div class="col-6 col-xl-3">
+          <div class="admin-stat">
+            <i class="fas fa-database fa-lg mb-3 text-info"></i>
+            <div class="number" id="databaseStatus">Checking</div>
+            <div class="label">Backend Status</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="admin-table-wrap">
+        <h5>Recently Uploaded Resources</h5>
+        <p class="status-note">
+          This list uses records returned by the backend.
+        </p>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Branch</th>
+                <th>Contributor</th>
+                <th>Uploaded</th>
+                <th>File</th>
+              </tr>
+            </thead>
+            <tbody id="recentResources">
+              <tr><td colspan="6">Loading database records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- USERS -->
+    <section id="section-users" class="admin-content-section">
+      <div class="admin-table-wrap">
+        <h5>Registered Users</h5>
+        <p class="status-note">
+          User information is loaded from the admin users API if available.
+        </p>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Branch</th>
+                <th>Batch Year</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable">
+              <tr><td colspan="6">Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section id="section-resources" class="admin-content-section">
+      <div class="admin-table-wrap">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <h5>All Uploaded Resources</h5>
+          <button class="btn btn-primary" onclick="loadResources()">
+            <i class="fas fa-sync-alt me-1"></i> Refresh
+          </button>
+        </div>
+        <p class="status-note">
+          These records come from MySQL through Spring Boot. Use View PDF to
+          open or download a resource.
+        </p>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Subject</th>
+                <th>Branch</th>
+                <th>Contributor</th>
+                <th>Upload Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminResourceTable">
+              <tr><td colspan="8">Loading resources...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="section-analytics" class="admin-content-section">
+      <div class="admin-table-wrap">
+        <h5>Database Summary</h5>
+        <p class="status-note">
+          These figures are calculated from resources currently returned by
+          the backend. They are not platform-wide download or rating statistics.
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="admin-stat">
+              <div class="label">Resources by Subject</div>
+              <div id="subjectSummary" class="mt-3">Loading...</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="admin-stat">
+              <div class="label">Resources by Branch</div>
+              <div id="branchSummary" class="mt-3">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section id="section-reports" class="admin-content-section">
+      <div class="admin-table-wrap">
+        <h5>Reports</h5>
+        <p>
+          A database-backed reporting system has not yet been implemented.
+          The earlier reports shown here were sample records.
+        </p>
+        <p class="text-muted mb-0">
+          Report submission, tracking, and moderation actions are not available
+          through the current backend.
+        </p>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="section-settings" class="admin-content-section">
+      <div class="admin-table-wrap">
+        <h5>Site Settings</h5>
+        <p>
+          These settings are informational only. Saving changes to site
+          configuration has not been implemented.
+        </p>
+        <div class="mb-3">
+          <label class="form-label">Site Name</label>
+          <input class="form-control" value="AcadBridge" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Maximum Upload Size</label>
+          <input class="form-control" value="20 MB" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Backend API</label>
+          <input class="form-control" value="/api/resources" readonly>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  const resourceState = {
+    resources: [],
+    users: null
+  };
+
+  function showSection(name, button) {
+    document.querySelectorAll('.admin-content-section').forEach(section => {
+      section.classList.remove('active');
+    });
+
+    document.getElementById('section-' + name).classList.add('active');
+
+    document.querySelectorAll('.admin-nav-button').forEach(item => {
+      item.classList.remove('active');
+    });
+
+    button.classList.add('active');
+
+    if (name === 'users') loadUsers();
+    if (name === 'resources') loadResources();
+    if (name === 'analytics') renderAnalytics();
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? '—').replace(/[&<>"']/g, character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '—';
+    return date.toLocaleDateString();
+  }
+
+  function downloadLink(resourceId) {
+    return '/api/resources/' + encodeURIComponent(resourceId) + '/download';
+  }
+
+  function resourceRow(resource, includeId) {
+    const id = resource.resourceId ?? resource.id;
+    const title = escapeHTML(resource.title);
+    const subject = escapeHTML(resource.subject);
+    const branch = escapeHTML(resource.branch);
+    const contributor = escapeHTML(resource.uploadedBy ?? resource.contributor);
+    const description = escapeHTML(resource.description);
+    const date = formatDate(resource.createdAt);
+
+    if (includeId) {
+      return `
+        <tr>
+          <td>${escapeHTML(id)}</td>
+          <td>${title}</td>
+          <td>${description}</td>
+          <td>${subject}</td>
+          <td>${branch}</td>
+          <td>${contributor}</td>
+          <td>${date}</td>
+          <td>
+            <a class="btn btn-sm btn-outline-primary"
+               href="${downloadLink(id)}" target="_blank" rel="noopener">
+              <i class="fas fa-file-pdf me-1"></i> View PDF
+            </a>
+          </td>
+        </tr>`;
+    }
+
+    return `
+      <tr>
+        <td>${title}</td>
+        <td>${subject}</td>
+        <td>${branch}</td>
+        <td>${contributor}</td>
+        <td>${date}</td>
+        <td>
+          <a class="btn btn-sm btn-outline-primary"
+             href="${downloadLink(id)}" target="_blank" rel="noopener">
+            View PDF
+          </a>
+        </td>
+      </tr>`;
+  }
+
+  async function loadResources() {
+    const table = document.getElementById('adminResourceTable');
+    const recent = document.getElementById('recentResources');
+
+    table.innerHTML = '<tr><td colspan="8">Loading resources...</td></tr>';
+    recent.innerHTML = '<tr><td colspan="6">Loading resources...</td></tr>';
+
+    try {
+      const response = await fetch('/api/resources');
+
+      if (!response.ok) {
+        throw new Error('Resource API returned HTTP ' + response.status);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error('Unexpected response from resource API');
+      }
+
+      resourceState.resources = data;
+
+      document.getElementById('totalResources').textContent = data.length;
+      document.getElementById('databaseStatus').textContent = 'Connected';
+
+      if (data.length === 0) {
+        table.innerHTML = '<tr><td colspan="8">No resources have been uploaded yet.</td></tr>';
+        recent.innerHTML = '<tr><td colspan="6">No resources have been uploaded yet.</td></tr>';
+      } else {
+        table.innerHTML = data.map(resource => resourceRow(resource, true)).join('');
+        recent.innerHTML = data.slice(0, 5).map(resource => resourceRow(resource, false)).join('');
+      }
+
+      document.getElementById('totalSubjects').textContent =
+        new Set(data.map(resource => resource.subject).filter(Boolean)).size;
+
+      renderAnalytics();
+    } catch (error) {
+      console.error('Failed to load resources:', error);
+
+      document.getElementById('databaseStatus').textContent = 'Error';
+      table.innerHTML = `
+        <tr><td colspan="8">
+          Unable to load resources. Confirm Spring Boot is running and
+          /api/resources works.
+        </td></tr>`;
+      recent.innerHTML = `
+        <tr><td colspan="6">
+          Unable to load resources from the backend.
+        </td></tr>`;
+    }
+  }
+
+  async function loadUsers() {
+    const table = document.getElementById('usersTable');
+
+    if (resourceState.users !== null) {
+      renderUsers(resourceState.users);
+      return;
+    }
+
+    table.innerHTML = '<tr><td colspan="6">Loading registered users...</td></tr>';
+
+    try {
+      const response = await fetch('/api/admin/users');
+
+      if (!response.ok) {
+        throw new Error('Users API returned HTTP ' + response.status);
+      }
+
+      const users = await response.json();
+
+      if (!Array.isArray(users)) {
+        throw new Error('Unexpected response from users API');
+      }
+
+      resourceState.users = users;
+      renderUsers(users);
+    } catch (error) {
+      console.warn('Users endpoint is not available:', error);
+
+      table.innerHTML = `
+        <tr><td colspan="6">
+          The users API is not implemented yet. The backend needs a
+          GET /api/admin/users endpoint before this table can display
+          registered users.
+        </td></tr>`;
+    }
+  }
+
+  function renderUsers(users) {
+    const table = document.getElementById('usersTable');
+    document.getElementById('totalUsers').textContent = users.length;
+
+    if (!users.length) {
+      table.innerHTML = '<tr><td colspan="6">No registered users found.</td></tr>';
+      return;
+    }
+
+    table.innerHTML = users.map(user => `
+      <tr>
+        <td>${escapeHTML(user.userId ?? user.id)}</td>
+        <td>${escapeHTML(user.fullName ?? user.name)}</td>
+        <td>${escapeHTML(user.email)}</td>
+        <td>${escapeHTML(user.role)}</td>
+        <td>${escapeHTML(user.branch ?? user.branchName)}</td>
+        <td>${escapeHTML(user.batchYear)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderAnalytics() {
+    const resources = resourceState.resources;
+
+    const subjectCounts = {};
+    const branchCounts = {};
+
+    resources.forEach(resource => {
+      const subject = resource.subject || 'Unknown subject';
+      const branch = resource.branch || 'Unknown branch';
+
+      subjectCounts[subject] = (subjectCounts[subject] || 0) + 1;
+      branchCounts[branch] = (branchCounts[branch] || 0) + 1;
+    });
+
+    document.getElementById('subjectSummary').innerHTML =
+      summaryList(subjectCounts);
+
+    document.getElementById('branchSummary').innerHTML =
+      summaryList(branchCounts);
+  }
+
+  function summaryList(counts) {
+    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    if (!entries.length) return '<p class="text-muted">No data available.</p>';
+
+    return entries.map(([name, count]) => `
+      <div class="d-flex justify-content-between border-bottom py-2 gap-3">
+        <span>${escapeHTML(name)}</span>
+        <strong>${count}</strong>
+      </div>
+    `).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadResources();
+    loadUsers();
+  });
+</script>
+
+</body>
+</html>
